@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card"
 import Input from "@/PageComponents/Input"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, FormEvent, useState } from "react"
+import useSignUp from "./useSignUp.hooks"
+import LoadingSpinner from "@/PageComponents/LoadingSpinner"
 
-type SignUpInfoType = {
+export type SignUpInfoType = {
   username: string,
   password: string,
   email: string
@@ -15,6 +17,8 @@ const SignUp = () => {
     password: '',
     email: ''
   })
+  
+  const { loading, signup } = useSignUp()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target
@@ -25,10 +29,18 @@ const SignUp = () => {
     }))
   }
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await signup(signUp)
+  }
+
   return (
     <div className="h-[863px] w-full overflow-hidden flex justify-center items-center">
-      <Card className="shadow-md dark:shadow-slate-800">
-        <form className="p-5 px-7 flex flex-col gap-4 w-[400px]">
+      <Card 
+      className="shadow-md dark:shadow-slate-800">
+        <form 
+        onSubmit={handleSubmit}
+        className="p-5 px-7 flex flex-col gap-4 w-[400px]">
 
           <CardTitle className="text-4xl">
             Sign Up
@@ -63,11 +75,17 @@ const SignUp = () => {
           </CardContent>
 
           <CardFooter>
-            <Button type='submit' variant={'default'}>
-              Sign Up
+            <Button 
+            className="w-[300px]"
+            disabled={loading}
+            type='submit' variant={'default'}>
+              {loading ? 
+              <div className="w-full flex justify-center">
+                <LoadingSpinner className="h-7 w-7" />
+              </div>
+              : "Sign Up"}
             </Button>
           </CardFooter>
-
         </form>
       </Card>
     </div>

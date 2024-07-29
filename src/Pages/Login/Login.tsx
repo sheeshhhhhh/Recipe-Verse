@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card"
 import Input from "@/PageComponents/Input"
-import { ChangeEvent, useState } from "react"
+import LoadingSpinner from "@/PageComponents/LoadingSpinner"
+import { ChangeEvent, FormEvent, useState } from "react"
 import { Link } from "react-router-dom"
+import useLogin from "./useLogin.hooks"
 
-type LoginInfoType = {
+export type LoginInfoType = {
   username: string,
   password: string
 }
@@ -15,7 +17,7 @@ const Login = () => {
     password: '',
   })
 
-
+  const { loading, login } = useLogin()
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target
@@ -26,17 +28,24 @@ const Login = () => {
     }))
   }
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await login(loginInfo)
+  }
+
   return (
     <div className="h-[863px] w-full overflow-hidden flex justify-center items-center">
       <Card className="shadow-md dark:shadow-slate-800">
-        <form className="p-5 px-7 flex flex-col gap-4 w-[400px]">
+        <form 
+        onSubmit={handleSubmit}
+        className="p-5 px-7 flex flex-col gap-4 w-[400px]">
           
           <CardTitle className="text-4xl">
             Login
           </CardTitle>
 
           <CardContent className="flex flex-col my-3 pb-0 px-0">
-
+      
             <Input
             value={loginInfo.username}
             label="username"
@@ -59,8 +68,15 @@ const Login = () => {
           </CardContent>
 
           <CardFooter>
-            <Button  type="submit" variant={'default'}>
-              Login
+            <Button 
+            className="w-[300px]"
+            disabled={loading}
+            type="submit" variant={'default'}>
+              {loading ?
+              <div className="w-full flex justify-center">
+                <LoadingSpinner className="h-7 w-7" />
+              </div>
+              : "Login"}
             </Button>
           </CardFooter>
           

@@ -8,6 +8,7 @@ import Home from './Pages/Home'
 import Login from './Pages/Login/Login'
 import SignUp from './Pages/SignUp/SignUp'
 import About from './Pages/About'
+import Explore from './Pages/Explore/Explore'
 
 // this will include all the pages where navbar shouldn's show up
 export const NoNavBarPages = [
@@ -24,6 +25,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/about' element={<About />}/>
+          <Route path='/explore' element={<Explore />} />
         </Routes>
       </div>
       <div>

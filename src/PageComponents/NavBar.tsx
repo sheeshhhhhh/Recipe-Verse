@@ -7,6 +7,8 @@ const NavBar = () => {
     const location = useLocation()
     const hideNavBar = NoNavBarPages.includes(location.pathname)
 
+    const authenticated = false
+
     return (
         <nav className="top-0 z-50 bg-clip-padding  shadow-sm dark:bg-gray-950/90">
             <div className='w-full max-w-7xl mx-auto px-4'>
@@ -21,8 +23,8 @@ const NavBar = () => {
                     {/* hide some parts of nav bar */}
                     {!hideNavBar && <nav className='hidden md:flex gap-8'>
                         <NavLink
-                        className={({ isPending, isActive}) => 
-                            `${isPending ? "doLater" : isActive ? "underline-offset-8 hover:underline" : ""} navlink `
+                        className={({ isActive}) =>
+                            `${isActive ? "underline-offset-8 underline" : ""} navlink `
                         }
                         to={'/Explore'}
                         >
@@ -30,8 +32,8 @@ const NavBar = () => {
                         </NavLink>
 
                         <NavLink
-                        className={({ isPending, isActive}) => 
-                            `${isPending ? "doLater" : isActive ? "underline-offset-8 hover:underline" : ""} navlink`
+                        className={({ isActive}) =>
+                            `${isActive ? "underline-offset-8 underline" : ""} navlink `
                         }
                         to={'/Vission'}
                         >
@@ -39,8 +41,8 @@ const NavBar = () => {
                         </NavLink>
 
                         <NavLink
-                        className={({ isPending, isActive}) => 
-                            `${isPending ? "doLater" : isActive ? "underline-offset-8 hover:underline" : ""} navlink`
+                        className={({ isActive}) =>
+                            `${isActive ? "underline-offset-8 underline" : ""} navlink `
                         }
                         to={'/Examples'}
                         >
@@ -48,8 +50,8 @@ const NavBar = () => {
                         </NavLink>
 
                         <NavLink
-                        className={({ isPending, isActive}) => 
-                            `${isPending ? "doLater" : isActive ? "underline-offset-8 underline" : ""} navlink`
+                        className={({ isActive}) =>
+                            `${isActive ? "underline-offset-8 underline" : ""} navlink `
                         }
                         to={'/About'}
                         >
@@ -57,7 +59,8 @@ const NavBar = () => {
                         </NavLink>
                     </nav>}
 
-                    <div className='flex items-center gap-3'>
+                    {/* show only when not authenticated authenticated */}
+                    {!authenticated && <div className='flex items-center gap-3'>
                         {/* make a dynamic where if not logged in then render this but if login in then render log out or select menu something */}
                         <Link to={'/login'}>
                             <Button 
@@ -76,7 +79,7 @@ const NavBar = () => {
                         </Link>
 
                         <ThemeSwitch />
-                    </div>
+                    </div>}
                 </div>
             </div>
         </nav>
