@@ -23,7 +23,11 @@ export type Recipe = {
     rating: number,
     tags: string [],
     callToAction: string,
-    cost: number
+    cost: number,
+    mealType?: string,
+    cuisine?: string,
+    mealPreference?: string,
+    instruction: string
 }
 // example data
 const recipeCards: Recipe[] = [
@@ -122,10 +126,200 @@ const recipeCards: Recipe[] = [
         tags: ["Dessert", "Baking", "Quick"],
         callToAction: "View Recipe",
         cost: 8 // assuming the cost is in dollars
+      },
+      {
+        title: "Spaghetti Carbonara",
+        image: undefined,
+        description: "Classic Italian pasta with creamy sauce and pancetta.",
+        ingredients: ["Spaghetti", "Eggs", "Pancetta", "Parmesan", "Pepper"],
+        cookingTime: "30 mins",
+        servings: 4,
+        rating: 4.5,
+        tags: ["Italian", "Quick", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 15 // assuming the cost is in dollars
+      },
+      {
+        title: "Vegan Buddha Bowl",
+        image: undefined,
+        description: "A vibrant bowl of quinoa, vegetables, and tahini dressing.",
+        ingredients: ["Quinoa", "Chickpeas", "Avocado", "Spinach", "Tahini"],
+        cookingTime: "25 mins",
+        servings: 2,
+        rating: 4.7,
+        tags: ["Vegan", "Healthy", "Quick"],
+        callToAction: "View Recipe",
+        cost: 10 // assuming the cost is in dollars
+      },
+      {
+        title: "Chicken Tikka Masala",
+        image: undefined,
+        description: "Spiced chicken in a creamy tomato sauce, served with rice.",
+        ingredients: ["Chicken", "Tomatoes", "Yogurt", "Spices", "Rice"],
+        cookingTime: "45 mins",
+        servings: 4,
+        rating: 4.8,
+        tags: ["Indian", "Spicy", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 20 // assuming the cost is in dollars
+      },
+      {
+        title: "Chocolate Chip Cookies",
+        image: undefined,
+        description: "Classic chewy cookies with gooey chocolate chips.",
+        ingredients: ["Flour", "Butter", "Sugar", "Chocolate Chips", "Eggs"],
+        cookingTime: "20 mins",
+        servings: 24,
+        rating: 4.9,
+        tags: ["Dessert", "Baking", "Quick"],
+        callToAction: "View Recipe",
+        cost: 8 // assuming the cost is in dollars
+      },
+      {
+        title: "Spaghetti Carbonara",
+        image: undefined,
+        description: "Classic Italian pasta with creamy sauce and pancetta.",
+        ingredients: ["Spaghetti", "Eggs", "Pancetta", "Parmesan", "Pepper"],
+        cookingTime: "30 mins",
+        servings: 4,
+        rating: 4.5,
+        tags: ["Italian", "Quick", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 15 // assuming the cost is in dollars
+      },
+      {
+        title: "Vegan Buddha Bowl",
+        image: undefined,
+        description: "A vibrant bowl of quinoa, vegetables, and tahini dressing.",
+        ingredients: ["Quinoa", "Chickpeas", "Avocado", "Spinach", "Tahini"],
+        cookingTime: "25 mins",
+        servings: 2,
+        rating: 4.7,
+        tags: ["Vegan", "Healthy", "Quick"],
+        callToAction: "View Recipe",
+        cost: 10 // assuming the cost is in dollars
+      },
+      {
+        title: "Chicken Tikka Masala",
+        image: undefined,
+        description: "Spiced chicken in a creamy tomato sauce, served with rice.",
+        ingredients: ["Chicken", "Tomatoes", "Yogurt", "Spices", "Rice"],
+        cookingTime: "45 mins",
+        servings: 4,
+        rating: 4.8,
+        tags: ["Indian", "Spicy", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 20 // assuming the cost is in dollars
+      },
+      {
+        title: "Chocolate Chip Cookies",
+        image: undefined,
+        description: "Classic chewy cookies with gooey chocolate chips.",
+        ingredients: ["Flour", "Butter", "Sugar", "Chocolate Chips", "Eggs"],
+        cookingTime: "20 mins",
+        servings: 24,
+        rating: 4.9,
+        tags: ["Dessert", "Baking", "Quick"],
+        callToAction: "View Recipe",
+        cost: 8 // assuming the cost is in dollars
+      },
+      {
+        title: "Spaghetti Carbonara",
+        image: undefined,
+        description: "Classic Italian pasta with creamy sauce and pancetta.",
+        ingredients: ["Spaghetti", "Eggs", "Pancetta", "Parmesan", "Pepper"],
+        cookingTime: "30 mins",
+        servings: 4,
+        rating: 4.5,
+        tags: ["Italian", "Quick", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 15 // assuming the cost is in dollars
+      },
+      {
+        title: "Vegan Buddha Bowl",
+        image: undefined,
+        description: "A vibrant bowl of quinoa, vegetables, and tahini dressing.",
+        ingredients: ["Quinoa", "Chickpeas", "Avocado", "Spinach", "Tahini"],
+        cookingTime: "25 mins",
+        servings: 2,
+        rating: 4.7,
+        tags: ["Vegan", "Healthy", "Quick"],
+        callToAction: "View Recipe",
+        cost: 10 // assuming the cost is in dollars
+      },
+      {
+        title: "Chicken Tikka Masala",
+        image: undefined,
+        description: "Spiced chicken in a creamy tomato sauce, served with rice.",
+        ingredients: ["Chicken", "Tomatoes", "Yogurt", "Spices", "Rice"],
+        cookingTime: "45 mins",
+        servings: 4,
+        rating: 4.8,
+        tags: ["Indian", "Spicy", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 20 // assuming the cost is in dollars
+      },
+      {
+        title: "Chocolate Chip Cookies",
+        image: undefined,
+        description: "Classic chewy cookies with gooey chocolate chips.",
+        ingredients: ["Flour", "Butter", "Sugar", "Chocolate Chips", "Eggs"],
+        cookingTime: "20 mins",
+        servings: 24,
+        rating: 4.9,
+        tags: ["Dessert", "Baking", "Quick"],
+        callToAction: "View Recipe",
+        cost: 8 // assuming the cost is in dollars
+      },
+      {
+        title: "Spaghetti Carbonara",
+        image: undefined,
+        description: "Classic Italian pasta with creamy sauce and pancetta.",
+        ingredients: ["Spaghetti", "Eggs", "Pancetta", "Parmesan", "Pepper"],
+        cookingTime: "30 mins",
+        servings: 4,
+        rating: 4.5,
+        tags: ["Italian", "Quick", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 15 // assuming the cost is in dollars
+      },
+      {
+        title: "Vegan Buddha Bowl",
+        image: undefined,
+        description: "A vibrant bowl of quinoa, vegetables, and tahini dressing.",
+        ingredients: ["Quinoa", "Chickpeas", "Avocado", "Spinach", "Tahini"],
+        cookingTime: "25 mins",
+        servings: 2,
+        rating: 4.7,
+        tags: ["Vegan", "Healthy", "Quick"],
+        callToAction: "View Recipe",
+        cost: 10 // assuming the cost is in dollars
+      },
+      {
+        title: "Chicken Tikka Masala",
+        image: undefined,
+        description: "Spiced chicken in a creamy tomato sauce, served with rice.",
+        ingredients: ["Chicken", "Tomatoes", "Yogurt", "Spices", "Rice"],
+        cookingTime: "45 mins",
+        servings: 4,
+        rating: 4.8,
+        tags: ["Indian", "Spicy", "Comfort Food"],
+        callToAction: "View Recipe",
+        cost: 20 // assuming the cost is in dollars
+      },
+      {
+        title: "Chocolate Chip Cookies",
+        image: undefined,
+        description: "Classic chewy cookies with gooey chocolate chips.",
+        ingredients: ["Flour", "Butter", "Sugar", "Chocolate Chips", "Eggs"],
+        cookingTime: "20 mins",
+        servings: 24,
+        rating: 4.9,
+        tags: ["Dessert", "Baking", "Quick"],
+        callToAction: "View Recipe",
+        cost: 8 // assuming the cost is in dollars
       }
 ];
-  
-  
 
 const Explore = () => {
     const [loading, setLoading] = useState<boolean>(false)

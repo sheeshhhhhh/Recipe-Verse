@@ -1,0 +1,206 @@
+/**
+ * v0 by Vercel.
+ * @see https://v0.dev/t/pjEmvkh93Ff
+ * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
+ */
+
+import { FormEvent, useState } from "react"
+
+import { Recipe } from "@/Pages/Explore/Explore"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import useChange from "@/lib/useChange"
+
+
+import CuisineandMealPreferences from "./CuisineandMealPreferences"
+import Description from "./Description"
+import IngredientInput from "./IngredientInput"
+import Instruction from "./Instruction"
+import TagsandMealType from "./TagsandMealType"
+import TimeandServing from "./TimeandServing"
+import LoadingSpinner from "@/PageComponents/LoadingSpinner"
+
+
+export interface recipeInfoType extends Recipe  {}
+
+// shoudl make this component viable for both create and edit
+export type MyRecipeProps = {
+    recipeData?: recipeInfoType,
+    loading?: boolean
+    callbackFunction: (e: FormEvent<HTMLFormElement>, recipeData: recipeInfoType) => any// add loading
+}
+
+export default function MyRecipeForm({
+    recipeData,
+    callbackFunction,
+    loading
+} : MyRecipeProps) {
+    const [recipeInfo, setRecipeInfo] = useState<recipeInfoType>(recipeData || 
+        {
+            title: '',
+            image: undefined,
+            description: '',
+            ingredients: [],
+            cookingTime: '',
+            servings: 0,
+            tags: [],
+            callToAction: '',
+            cost: 0,
+            cuisine: '',
+            mealType: '',
+            mealPreference: '',
+            instruction: '',
+            rating: 0
+        }
+)
+    const { handleChangeObject } = useChange<recipeInfoType>()
+
+    // make a hook that will handle the submit and loading where when loadingthe input will be loading state
+    // and also unclickable
+    
+    return (
+        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            <form
+            onSubmit={e => callbackFunction(e, recipeInfo)}
+            className="grid gap-6 relative">
+                {loading && (
+                    <div className="w-full h-full rounded-lg z-40 bg-black opacity-45 absolute flex flex-col items-center ">
+                        <LoadingSpinner className="h-12 w-12 mt-32 text-white" />
+                        <h2 className="font-bold text-2xl text-white">Saving...</h2>
+                    </div>
+                )}
+                <div className="grid gap-2">
+                    <Label htmlFor="title">Recipe Title</Label>
+                    <Input name="title" value={recipeInfo.title} 
+                    onChange={(e) => handleChangeObject(e, setRecipeInfo)} 
+                    id="title" 
+                    placeholder="Enter recipe title" />
+                </div>
+                <div className="grid gap-2">
+                    {/* mkae a handle Change file in the recipeInfoTypes later */}
+                    <Label htmlFor="image">Recipe Image</Label>
+                    <Input id="image" type="file" />
+                </div>
+                    <Description recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
+                    <Instruction recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
+                    <IngredientInput recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
+                    <TimeandServing recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
+                    <TagsandMealType recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
+                <CuisineandMealPreferences recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} /> 
+                <div className="flex justify-end">
+                    <Button type="submit">Save Recipe</Button>
+                </div>
+            </form>
+            <Preview recipeInfo={recipeInfo} />
+        </div>
+    )
+}
+
+type PreviewProps = {
+    recipeInfo: recipeInfoType
+}
+
+function Preview({ recipeInfo } : PreviewProps) {   
+
+    return (
+        <div className="bg-muted p-6 rounded-lg h-fit">
+            <div className="grid gap-4">
+            <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">{recipeInfo.title ? recipeInfo.title : "No Title"}</h2>
+                <div className="flex items-center gap-1">
+                    <StarIcon className="w-5 h-5 fill-primary" />
+                    <StarIcon className="w-5 h-5 fill-primary" />
+                    <StarIcon className="w-5 h-5 fill-primary" />
+                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
+                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
+                </div>
+            </div>
+            <div className="flex items-center gap-4">
+                <img 
+                src="/placeholder.svg" 
+                alt="Recipe Image"
+                width={260} 
+                height={200} 
+                className="rounded-lg" />
+                <div className="grid gap-2 ">
+                    <div className="text-muted-foreground">
+                        <span className="font-medium">Cooking Time:</span> {recipeInfo.cookingTime}
+                    </div>
+                    <div className="text-muted-foreground">
+                        <span className="font-medium">Servings:</span> {recipeInfo.servings}
+                    </div>
+                    <div className="text-muted-foreground">
+                        <span className="font-medium">Cuisine:</span> {recipeInfo.cuisine}
+                    </div>
+                    <div className="text-muted-foreground">
+                        <span className="font-medium">Meal Preference:</span> {recipeInfo.mealPreference}
+                    </div>
+                    <div className="text-muted-foreground">
+                        <span className="font-medium">Meal Type:</span> {recipeInfo.mealType}
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3 className="text-xl font-bold">Description</h3>
+                <div>
+                    {recipeInfo.description}
+                </div>
+            </div>
+            <div>
+                <h3 className="text-xl font-bold">Ingredients</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                    {recipeInfo.ingredients.map((Ingredient, idx) => <li key={idx}>{Ingredient}</li>)}
+                </ul>
+            </div>
+            <div className="w-[465px]">
+                <h3 className="text-xl font-bold">Instructions</h3>
+                <div className="prose">
+                    {recipeInfo.instruction}
+                </div>
+            </div>
+            </div>
+        </div>
+    )
+}
+
+
+function StarIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  )
+}
+
+
+function XIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  )
+}

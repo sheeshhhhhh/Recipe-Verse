@@ -2,13 +2,14 @@ import '@/App.css'
 import '@/index.css'
 import NavBar from './PageComponents/NavBar'
 
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Router } from 'react-router-dom'
 
 import Home from './Pages/Home'
 import Login from './Pages/Login/Login'
 import SignUp from './Pages/SignUp/SignUp'
 import About from './Pages/About'
 import Explore from './Pages/Explore/Explore'
+import MyRecipe from './Pages/MyRecipe/MyRecipe'
 
 // this will include all the pages where navbar shouldn's show up
 export const NoNavBarPages = [
@@ -33,6 +34,14 @@ function App() {
           {/* USE SEARCH PARAMS OF CALLBACK URL TO HANDLE LOGIN AND SIGNUP */}
           <Route path='/login' element={<Login />} /> 
           <Route path='/signUp' element={<SignUp />}/>
+        </Routes>
+      </div>
+      <div>
+        <Routes>
+          {/* USE FOR USER AND RECIPE NEEDED TO BE AUTHENTICATED */}
+          <Route path='/recipe/:id' element={null} />
+          <Route path='/myrecipe/*' element={<MyRecipe />} />
+          <Route path='/profile' element={null} />
         </Routes>
       </div>
     </div>

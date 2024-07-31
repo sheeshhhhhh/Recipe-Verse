@@ -24,7 +24,7 @@ const Filter = ({
     const { handleChangeString, handleChangeNumber, handleChangeObject } = useChange<FilterType>()
 
     return (
-        <div>
+        <div className="h-[644px] sticky top-8">
             <h2 className="font-bold text-3xl ml-3 mb-2">Filter</h2>
             <ScrollArea className="h-[600px] w-[280px]">
                 <div className="flex flex-col gap-4 pl-2">
@@ -82,13 +82,14 @@ const Filter = ({
                     <div className="h-[60px]">
                         <div className="flex items-center mb-2 h-[40px]">
                             <h2 className="font-semibold mr-9">Cost</h2>
-                            {filter.cost ?
-                              <Input 
-                              name="cost"
-                              onChange={e => handleChangeObject(e, setFilter)}
-                              className="font-medium w-20 focus-visible:ring-0" 
-                              value={filter.cost} />
-                            : <p className="font-medium">No Budget</p>} 
+                              <div className="flex items-center relative">
+                                <h2 className="font-bold top-2 absolute">$</h2>
+                                <Input 
+                                name="cost"
+                                onChange={e => handleChangeObject(e, setFilter)}
+                                className="font-medium w-20 ring-0 border-none" 
+                                value={filter.cost} />
+                              </div>
                         </div>
                         <Slider 
                         value={[filter.cost || 0]}
