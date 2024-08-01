@@ -1,12 +1,17 @@
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 
 
 const SideBar = () => {
   return (
     <div className="p-3">
+
         <div>
-            <h2 className="font-bold text-3xl mb-5">My Recipes</h2>
-          </div>
+
+            <Link to={'/myrecipe/dashboard'}>
+              <h2 className="font-bold text-3xl mb-5">My Recipes</h2>
+            </Link>
+
+        </div>
         <div className="flex flex-col gap-2 pl-3">
           
           <div>
@@ -24,7 +29,7 @@ const SideBar = () => {
             <NavLink
             to={'/myrecipe/draft'}
             className={({ isActive }) => (
-              `${isActive ? "underline-offset-8" : ""} navlink`
+              `${isActive ? "underline-offset-8 underline" : ""} navlink`
             )}
             >
               Draft
@@ -35,7 +40,7 @@ const SideBar = () => {
             <NavLink
             to={'/myrecipe/create'}
             className={({ isActive}) => (
-              `${isActive ? "underline-offset-8" : ""} navlink`
+              `${isActive ? "underline-offset-8 underline" : ""} navlink`
             )}
             >
               Create
@@ -43,6 +48,7 @@ const SideBar = () => {
           </div>
 
         </div>
+        
     </div>
   )
 }
