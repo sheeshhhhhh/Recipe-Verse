@@ -14,8 +14,8 @@ const SearchDraft = ({
     const debounce = useDebounce(search, 350)
 
     useEffect(() => {
-        console.log(debounce)
-        // handleSearch(search)
+        if(search === undefined) return
+        handleSearch(search)
     }, [debounce])
 
     return (

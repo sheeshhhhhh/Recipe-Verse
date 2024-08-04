@@ -4,7 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 
-import { FormEvent, useState } from "react"
+import { FormEvent, MouseEvent, useState } from "react"
 
 import { Recipe } from "@/Pages/Explore/Explore"
 import { Button } from "@/components/ui/button"
@@ -28,13 +28,15 @@ export interface recipeInfoType extends Recipe  {}
 export type MyRecipeProps = {
     recipeData?: recipeInfoType,
     loading?: boolean
-    callbackFunction: (e: FormEvent<HTMLFormElement>, recipeData: recipeInfoType) => any// add loading
+    callbackFunction: (e: FormEvent<HTMLFormElement>, recipeData: recipeInfoType) => any,// add loading
+    saveDraft?: (e: MouseEvent<HTMLButtonElement>, recipeData: recipeInfoType, postId?: string) => Promise<any>
 }
 
 export default function MyRecipeForm({
     recipeData,
     callbackFunction,
-    loading
+    loading,
+    saveDraft
 } : MyRecipeProps) {
     const [recipeInfo, setRecipeInfo] = useState<recipeInfoType>(recipeData || 
         {
@@ -44,14 +46,12 @@ export default function MyRecipeForm({
             ingredients: [],
             cookingTime: '',
             servings: 0,
-            tags: [],
             callToAction: '',
             cost: 0,
             cuisine: '',
             mealType: '',
             mealPreference: '',
-            instruction: '',
-            rating: 0
+            instruction: ''
         }
 )
     const { handleChangeObject } = useChange<recipeInfoType>()
@@ -60,7 +60,7 @@ export default function MyRecipeForm({
     // and also unclickable
     
     return (
-        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto ">
             <form
             onSubmit={e => callbackFunction(e, recipeInfo)}
             className="grid gap-6 relative">
@@ -87,8 +87,9 @@ export default function MyRecipeForm({
                     <IngredientInput recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
                     <TimeandServing recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
                     <TagsandMealType recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
-                <CuisineandMealPreferences recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} /> 
-                <div className="flex justify-end">
+                    <CuisineandMealPreferences recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} /> 
+                <div className="flex gap-3 justify-end">
+                    {saveDraft && <Button onClick={(e) => saveDraft(e, recipeInfo)} type="button" variant={'secondary'}>Save Draft</Button>}
                     <Button type="submit">Save Recipe</Button>
                 </div>
             </form>

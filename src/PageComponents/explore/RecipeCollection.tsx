@@ -9,23 +9,20 @@ import RecipeSkeleton from "./RecipeSkeleton";
 
 type RecipeCollectionProps = {
   recipeCollection: Recipe[],
-  loading: boolean
 }
 
 const RecipeCollection = ({
-  loading,
   recipeCollection
 } : RecipeCollectionProps) => {
     const stars = [1, 2, 3, 4, 5]
     
-    
-    if(loading) return <RecipeSkeleton />
+    if(recipeCollection.length === 0) return <RecipeSkeleton />
 
     return (
       <div className="w-full h-fit grid grid-cols-4 gap-5">
-          {recipeCollection?.map((item) => {
+          {recipeCollection?.map((item, idx) => {
             return (
-              <HoverCard openDelay={300} closeDelay={0}>
+              <HoverCard key={idx} openDelay={300} closeDelay={0}>
                 <HoverCardTrigger>
                   <Card className="flex flex-col items-center h-[345px] w-[280px] shadow-md">
                     <CardHeader className="p-3">
@@ -37,14 +34,14 @@ const RecipeCollection = ({
                       <CardTitle className="text-xl">{item.title}</CardTitle>
 
                       <div className="flex">
-                        {stars.map((value) => {
+                        {stars.map((value, idx) => {
 
                           const isStar = item.rating >= value // will define wheter it's a star base on value of the item
                           const isHalfStar = !isStar && value - 0.6 < item.rating // if it's not a star but not bigger than 0.4 of previous value then it is a half star
                           // confusing 
 
                           return (
-                            <div>
+                            <div key={idx}>
                               {isStar && <FaStar />}
                               {isHalfStar && <FaStarHalf />}
                             </div>
@@ -54,18 +51,9 @@ const RecipeCollection = ({
                       </div>
 
                       <div className="flex gap-2 items-center">
-                        {item.tags.map((item, idx) => {
-                          if(idx === 3) return <CardDescription>etc...</CardDescription> 
-                          // put etc... to the last index because we only allow up to 3 and 4 indedx is valued 3
-
-                          if(idx > 3) return // return so nothing gets rendered
-
-                          return (
-                            <div>
-                              <CardDescription className="font-medium">{item},</CardDescription>
-                            </div>
-                          )
-                        })}
+                        <CardDescription className="font-medium">{item.cuisine}</CardDescription>
+                        <CardDescription className="font-medium">{item.mealPreference}</CardDescription>
+                        <CardDescription className="font-medium">{item.mealType}</CardDescription>
                       </div>
 
                       <CardDescription className="font-bold">Cost: ${item.cost}</CardDescription>

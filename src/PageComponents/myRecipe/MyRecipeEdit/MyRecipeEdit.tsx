@@ -1,21 +1,36 @@
-import React, { FormEvent, useEffect } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import MyRecipeForm, { recipeInfoType } from '../MyRecipeForm/MyRecipeCreate'
 import EditRecipe from './EditRecipe.hook'
 import LoadingSpinner from '@/PageComponents/LoadingSpinner'
+import {  useNavigate, useParams } from 'react-router-dom'
+import { useAuthContext } from '@/context/authContext'
 
 
 const MyRecipeEdit = () => {
-    // create a params for this so taht we can get the recipe Id
+    const navigate = useNavigate()
+    const { postId } = useParams()
+    const [recipeData, setRecipeData] = useState<recipeInfoType>()
+
+    if(!postId) return navigate('/error')
+
     const { saveEdit, getData } = EditRecipe()
+    const { user } = useAuthContext()
 
     const callbackFunction = async (e: FormEvent<HTMLFormElement>, recipeData: recipeInfoType) => {
         e.preventDefault()
-        //saveEdit.SaveEdit(recipeId, recipeData)
-        console.log(recipeData)
+        await saveEdit.SaveEdit(postId, recipeData)
     }
 
-    useEffect(() => {
-        getData.getData('1231231313131') // just an example supposed to get the recipe Id
+    useEffect(() => {    
+        const fetchData = async () => {
+        
+            const data = await getData.getData(postId) 
+            
+            if(data.author.id !== user.id) return console.log('not the owner of this recipe')
+
+            setRecipeData(data.recipe)
+        }
+        fetchData()
     }, [])
 
     if(getData.loading) return (
@@ -25,7 +40,10 @@ const MyRecipeEdit = () => {
     )
 
     return (
-        <MyRecipeForm loading={saveEdit.loading} callbackFunction={callbackFunction} />
+        <MyRecipeForm 
+        recipeData={recipeData} 
+        loading={saveEdit.loading} 
+        callbackFunction={callbackFunction} />
     )
 }
 

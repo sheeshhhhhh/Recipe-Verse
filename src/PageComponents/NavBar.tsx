@@ -2,12 +2,13 @@ import { Button } from '@/components/ui/button'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import ThemeSwitch from './ThemeSwitch'
 import { NoNavBarPages } from '@/App'
+import { useAuthContext } from '@/context/authContext'
 
 const NavBar = () => {
     const location = useLocation()
     const hideNavBar = NoNavBarPages.includes(location.pathname)
 
-    const authenticated = false
+    const { user: authenticated } = useAuthContext()
 
     return (
         <nav className="top-0 z-50 bg-clip-padding  shadow-sm dark:bg-gray-950/90">
@@ -60,26 +61,27 @@ const NavBar = () => {
                     </nav>}
 
                     {/* show only when not authenticated authenticated */}
-                    {!authenticated && <div className='flex items-center gap-3'>
+                    <div className='flex items-center gap-3'>
                         {/* make a dynamic where if not logged in then render this but if login in then render log out or select menu something */}
-                        <Link to={'/login'}>
-                            <Button 
-                            variant={'outline'} 
-                            className='text-base'>
-                                
-                                    Login
-                            
-                            </Button>
-                        </Link>
+                        {!authenticated && 
+                        <div>
+                            <Link to={'/login'}>
+                                <Button 
+                                variant={'outline'} 
+                                className='text-base'>  
+                                        Login
+                                </Button>
+                            </Link>
 
-                        <Link to={'/signUp'}>
-                            <Button className='text-base'>
-                                sign Up
-                            </Button>
-                        </Link>
+                            <Link to={'/signUp'}>
+                                <Button className='text-base'>
+                                    sign Up
+                                </Button>
+                            </Link>
+                        </div>}
 
                         <ThemeSwitch />
-                    </div>}
+                    </div>
                 </div>
             </div>
         </nav>

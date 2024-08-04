@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DraftDataType } from './MyRecipeDraft'
 
 const useDraft = () => {
-    const [loading, setLoading] = useState<boolean>(false)
     const [draftData, setDraftData] = useState<DraftDataType[] >([])
 
-    const deleteDraft = async (recipeId: string) => {
+    const deleteDraft = async (postId: string) => {
         try {
-            const res: Response = await fetch('http://localhost:3000/api/recipe/delete', {
+            const res: Response = await fetch('http://localhost:4000/api/dashboard/delete', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
                 },
-                body: JSON.stringify({ recipeId: recipeId}),
+                body: JSON.stringify({ postId: postId}),
                 credentials: 'include'
             })
 
@@ -20,23 +19,23 @@ const useDraft = () => {
 
             if(data.error) throw new Error(data.error)
 
-            // handle the data later
-            // const filterData = draftData.filter((recipe) => recipe.id !== recipeId)
-            // setDraftData(filterData)
+            
+            const filterData = draftData.filter((recipe) => recipe.id !== postId)
+            setDraftData(filterData)
         } catch (error: any) {
             console.log('error in the deleteDraft function in the useDraft hook Error: ' + error.message)
             return { error: error.message }
         }
     }
 
-    const uploadDraft = async (recipeId: string) => {
+    const uploadDraft = async (postId: string) => {
         try {
-            const res: Response = await fetch('http://localhost:3000/api/recipe/delete', {
+            const res: Response = await fetch('http://localhost:4000/api/dashboard/upload', {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
                 },
-                body: JSON.stringify({recipeId: recipeId}),
+                body: JSON.stringify({postId: postId}),
                 credentials: 'include'
             })
 
@@ -44,8 +43,8 @@ const useDraft = () => {
 
             if(data.error) throw new Error(data.error)
 
-            // const filterData = draftData.filter((recipe) => recipe.id !== recipeId)
-            // setDraftData(filterData)
+            const filterData = draftData.filter((recipe) => recipe.id !== postId)
+            setDraftData(filterData)
         } catch (error: any) {
             console.log('error in the deleteDraft function in the useDraft hook Error: ' + error.message)
             return { error: error.message }
@@ -54,10 +53,10 @@ const useDraft = () => {
 
     const handleSearch = async (search: string) => {
         try {
-            const res: Response = await fetch('http://localhost:3000/api/recipe/search', {
+            const res: Response = await fetch('http://localhost:4000/api/dashboard/search', {
                 method: 'POST',
                 headers: {
-                    'Contect-Type' : 'application/json'
+                    'Content-Type' : 'application/json'
                 },
                 body: JSON.stringify({
                     search: search
@@ -78,9 +77,8 @@ const useDraft = () => {
 
     useEffect(() => {
         const getDraftData = async () => {
-            setLoading(true)
             try {
-                const res: Response = await fetch('http://localhost:3000/api/recipe/getDraft', {
+                const res: Response = await fetch('http://localhost:4000/api/dashboard/getDraft', {
                     method: "GET",
                     credentials: 'include'
                 })
@@ -93,14 +91,13 @@ const useDraft = () => {
             } catch (error: any) {
                 console.log('error in the getDraftData useEffect in the useDraft Error:' + error.message)
                 return { error : error.message}
-            } finally {
-                setLoading(false)
             }
         }
         //getDraftData()
+        getDraftData()
     }, [])
 
-    return { loading, draftData, deleteDraft, uploadDraft, handleSearch } 
+    return { draftData, deleteDraft, uploadDraft, handleSearch } 
 }
 
 export default useDraft

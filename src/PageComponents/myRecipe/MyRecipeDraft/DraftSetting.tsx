@@ -12,17 +12,22 @@ import {
 import { PencilIcon } from "lucide-react"
 import { Trash2Icon } from "lucide-react"
 import { UploadIcon } from 'lucide-react'
+import { Link } from "react-router-dom"
   
 
 type DraftSettingProps = {
-    recipeId: string
+    postId: string,
+    deleteDraft: (postId: string) => Promise<void | { error : string}>,
+    uploadDraft: (postId: string) => Promise<void | { error : string}>
 }
 
 const DraftSetting = ({
-    recipeId
+    postId,
+    deleteDraft,
+    uploadDraft
 } : DraftSettingProps) => {
 
-    if(!recipeId) return 
+    if(!postId) return 
 
     return (
             <DropdownMenu>
@@ -35,14 +40,20 @@ const DraftSetting = ({
                     <DropdownMenuLabel>Draft Settings</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                        <PencilIcon className="mr-3 h-6 w-6"/>
-                        <span className="text-base font-medium">Edit</span>
+                        <Link className="flex" to={`/myrecipe/edit/${postId}`}>
+                            <PencilIcon className="mr-3 h-6 w-6"/>
+                            <span className="text-base font-medium">Edit</span>
+                        </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                    onClick={(e) => deleteDraft(postId)}
+                    >
                         <Trash2Icon className="mr-3 h-6 w-6" />
                         <span className="text-base font-medium">Delete</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem
+                    onClick={(e) => uploadDraft(postId)}
+                    >
                         <UploadIcon className="mr-3 h-6 w-6" />
                         <span className="text-base font-medium">Upload</span>
                     </DropdownMenuItem>

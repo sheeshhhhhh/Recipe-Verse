@@ -34,8 +34,8 @@ const Filter = ({
                         value={filter.mealType} 
                         onValueChange={value => handleChangeString('mealType', value, setFilter)}  
                         className="ml-2">
-                            {mealTypes.map((mealType) => (
-                                <div className="flex items-center space-x-2">
+                            {mealTypes.map((mealType, idx) => (
+                                <div key={idx} className="flex items-center space-x-2">
                                     <RadioGroupItem value={mealType.toLowerCase()} />
                                     <Label>{mealType}</Label>
                                 </div>
@@ -54,8 +54,8 @@ const Filter = ({
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Cuisine</SelectLabel>
-                                    {cuisine.map((item) => 
-                                        <SelectItem value={item.toLowerCase()}>{item}</SelectItem>)
+                                    {cuisine.map((item, idx) => 
+                                        <SelectItem key={idx} value={item.toLowerCase()}>{item}</SelectItem>)
                                     }
                                 </SelectGroup>
                             </SelectContent>

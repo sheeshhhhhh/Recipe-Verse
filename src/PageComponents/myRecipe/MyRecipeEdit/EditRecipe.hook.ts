@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { recipeInfoType } from '../MyRecipeForm/MyRecipeCreate'
+import formData from '../MyRecipeCreate/formData.utils'
 
 const EditRecipe = () => {
     const [loading, setLoading] = useState<boolean>(false) 
     const [dataLoading, setDataLoading] = useState<boolean>(false)
 
-    const getData = async (recipeId: string): Promise<recipeInfoType | { error: string }> => {
+    const getData = async (postId: string): Promise<any | { error: string }> => {
         setDataLoading(true)
         try {
-            const res:Response = await fetch(`http://localhost:3000/api/recipe/get/${recipeId}`, {
+            const res:Response = await fetch(`http://localhost:4000/api/recipe/getRecipe/${postId}`, {
                 method: 'GET',
                 credentials: 'include'
             }) 
@@ -29,22 +30,23 @@ const EditRecipe = () => {
     const SaveEdit = async (recipeId: string, recipeData: recipeInfoType): Promise<recipeInfoType | { error: string}> => {
         setLoading(true)
         try {
-            const formData = new FormData()
-            // data the recipedata to the form later
+            
+            const formdata = formData(recipeData)
 
-            const res: Response = await fetch(`http://localhost:3000/api/recipe/edit/${recipeId}`, {
+            const res: Response = await fetch(`http://localhost:4000/api/recipe/edit/${recipeId}`, {
                 method: 'POST',
-                body: formData,
+                body: formdata,
                 credentials: 'include'
             })
 
+            
             const data = await res.json()
 
             if(data.error) throw new Error(data.error)
 
             return data
         } catch (error: any) {
-            console.log('Error in the SaveEdit function in the EditRecipe hook', "Errod: " + error.message)
+            console.log('Error in the SaveEdit function in the EditRecipe hook', "Errod: " + error)
             return { error: error.message }
         } finally {
             setLoading(false)

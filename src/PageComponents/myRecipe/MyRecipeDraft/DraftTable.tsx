@@ -15,8 +15,8 @@ import DraftSetting from "./DraftSetting"
 
 type DraftTableProps = { 
     DraftData: DraftDataType[], // any for now
-    uploadDraft: (recipeId: string) => Promise<{ error: any; } | undefined>,
-    deleteDraft: (recipeId: string) => Promise<{ error: any; } | undefined>,
+    uploadDraft: (postId: string) => Promise<{ error: any; } | undefined>,
+    deleteDraft: (postId: string) => Promise<{ error: any; } | undefined>,
 }
 
 const DraftTable = ({
@@ -30,6 +30,7 @@ const DraftTable = ({
         <Table>
             {/* should have a title for Draft */}
             <TableCaption>All your unpublish or unfinish task</TableCaption>
+
             <TableHeader>
                 <TableRow>
                     <TableHead>Title</TableHead>
@@ -38,19 +39,31 @@ const DraftTable = ({
                     {/* put table in here for function or popover something like that */}
                 </TableRow>
             </TableHeader>
+
             <TableBody>
-                {DraftData?.map((draft) => (
-                    <TableRow>
-                        <TableCell className="text-xl font-semibold">{draft.title}</TableCell>
-                        <TableCell className="font-medium">{format(draft.updateAt, 'P')}</TableCell>
-                        <TableCell className="font-medium">{format(draft.createAt, 'P')}</TableCell>
-                        <TableCell>
-                            <DraftSetting recipeId={draft.id} />
-                        </TableCell>
-                    </TableRow>
-                ))}
+                {DraftData?.map((draft) => {
+                    const updatedTime = format(new Date(draft.updatedAt), 'MM-dd-yyyy')
+                    const createTime = format(new Date(draft.createdAt), 'MM-dd-yyyy')
+                    
+                    return (
+                        <TableRow key={draft.id}>
+                            <TableCell className="text-xl font-semibold">{draft.recipe.title}</TableCell>
+                            <TableCell className="font-medium w-[120px]">{createTime}</TableCell>
+                            <TableCell className="font-medium">{updatedTime}</TableCell>
+                            <TableCell>
+                                <DraftSetting 
+                                uploadDraft={uploadDraft}
+                                deleteDraft={deleteDraft}
+                                postId={draft.id} 
+                                />
+                            </TableCell>
+                        </TableRow>
+                    )
+                })
+                }
             </TableBody>
-            <TableFooter>
+                
+           {DraftData.length > 0 && <TableFooter>
                 <TableRow>
                     <TableCell className="font-semibold text-lg">
                         Total Draft: {DraftData.length}
@@ -59,7 +72,8 @@ const DraftTable = ({
                     <TableCell></TableCell>
                     <TableCell></TableCell>
                 </TableRow>
-            </TableFooter>
+            </TableFooter>}
+
         </Table>
     )
 }

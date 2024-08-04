@@ -16,23 +16,16 @@ const TagsandMealType = ({
     setRecipeInfo
 } : TagsandMealTypeProps) => {
 
-    const { handleChangeObject } = useChange<recipeInfoType>()
+    const { handleChangeObject, handleChangeString } = useChange<recipeInfoType>()
  
     return (
         <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-                <Label htmlFor="tags">Tags</Label>
-                <Input 
-                name="tags"
-                value={recipeInfo.tags}
-                onChange={(e) => handleChangeObject(e, setRecipeInfo)}
-                id="tags" 
-                placeholder="Enter tags separated by commas"
-                />
-            </div>
-            <div className="grid gap-2">
                 <Label htmlFor="mealType">Meal Type</Label>
-                <Select aria-label="mealType">
+                <Select 
+                value={recipeInfo.mealType} 
+                onValueChange={value => handleChangeString('mealType', value, setRecipeInfo)} 
+                aria-label="mealType">
                     <SelectTrigger>
                         <SelectValue placeholder="Select meal type" />
                     </SelectTrigger>

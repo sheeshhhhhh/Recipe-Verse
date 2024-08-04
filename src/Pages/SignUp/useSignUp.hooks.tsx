@@ -1,14 +1,16 @@
 import { useState } from "react"
 import { SignUpInfoType } from "./SignUp"
+import { useNavigate } from "react-router-dom"
 
 const useSignUp = () => {
   const [loading, setLoading] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   const signup = async (signUpInfo: SignUpInfoType) => {
     if(!signUpInfo.username || !signUpInfo.password) return
     setLoading(true)
     try {
-      const res: Response = await fetch('http://localhost:3000/api/auth/signup', {
+      const res: Response = await fetch('http://localhost:4000/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type' : 'application/json'
@@ -20,8 +22,8 @@ const useSignUp = () => {
       const data = await res.json()
 
       if(data.error) throw new Error(data.error)
-
-      // handle if signUp properly
+      
+      navigate('/explore')
     } catch (error: any) {
       console.log(`Error in the useSignUp hook Error: ${error.message}`)
       // put toast here that says the error

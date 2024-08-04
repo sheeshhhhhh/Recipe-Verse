@@ -19,7 +19,7 @@ const MyRecipe = () => {
                     {/* Sub Routes */}
                     <Routes>
                         <Route path="dashboard" element={<Dashboard />}     />
-                        <Route path="edit"      element={<MyRecipeEdit />}  />
+                        <Route path="edit/:postId"      element={<MyRecipeEdit />}  />
                         <Route path="create"    element={<CreateRecipe />}  />
                         <Route path="draft"     element={<MyRecipeDraft />} />
                     </Routes>
