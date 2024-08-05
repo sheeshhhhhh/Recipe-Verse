@@ -1,10 +1,8 @@
 import { useState } from 'react'
 import { LoginInfoType } from './Login'
-import { useNavigate } from 'react-router-dom'
 
 const useLogin = () => {
   const [loading, setLoading] = useState<boolean>(false)
-  const navigate = useNavigate()
 
   const login = async (loginInfo: LoginInfoType) => {
     if(!loginInfo.username || !loginInfo.password) return
@@ -23,7 +21,7 @@ const useLogin = () => {
       
       if(data.error) throw new Error(data.error)
 
-      navigate('/explore')
+      window.location.assign('http://localhost:3000/explore')
     } catch (error: any) {
         console.log('Error in the useLogin hook Error: ' + error)
     } finally {

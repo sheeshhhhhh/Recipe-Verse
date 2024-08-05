@@ -1,10 +1,8 @@
 import { useState } from "react"
 import { SignUpInfoType } from "./SignUp"
-import { useNavigate } from "react-router-dom"
 
 const useSignUp = () => {
   const [loading, setLoading] = useState<boolean>(false)
-  const navigate = useNavigate()
 
   const signup = async (signUpInfo: SignUpInfoType) => {
     if(!signUpInfo.username || !signUpInfo.password) return
@@ -23,7 +21,7 @@ const useSignUp = () => {
 
       if(data.error) throw new Error(data.error)
       
-      navigate('/explore')
+      window.location.assign('http://localhost:3000/login')
     } catch (error: any) {
       console.log(`Error in the useSignUp hook Error: ${error.message}`)
       // put toast here that says the error

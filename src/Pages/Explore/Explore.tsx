@@ -2,7 +2,9 @@
 import useDebounce from "@/lib/useDebounce"
 import Filter from "@/PageComponents/explore/Filter"
 import RecipeCollection from "@/PageComponents/explore/RecipeCollection"
+import RecipeSkeleton from "@/PageComponents/explore/RecipeSkeleton"
 import ExploreSearch from "@/PageComponents/explore/Search"
+import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 
 export type FilterType = {
@@ -14,6 +16,7 @@ export type FilterType = {
 }
 
 export type Recipe = {
+    rating: number,
     title: string,
     image: string[] | undefined,
     description: string,
@@ -133,7 +136,6 @@ export type Recipe = {
 
 
 const Explore = () => {
-    const [recipeCollection, setRecipeCollection] = useState<Recipe []>([])// any for now
     const [filter, setFilter] = useState<FilterType>({
         search: '',
         mealType: '',
@@ -141,32 +143,48 @@ const Explore = () => {
         mealPreference: '',
         cost: undefined
     })
-    const debounce = useDebounce(filter, 500) // so that we don't need to request that often
-    
-    useEffect(() => {
-        const fetchRecipe = async () => {
-            try {
 
-                const res: Response = await fetch('http://localhost:4000/api/recipe/getRecipe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type' : 'application/json'
-                    },
-                    body: JSON.stringify(filter),
-                    credentials: 'include'
-                })
+    const { data, isLoading } = useQuery({
+        queryKey: ['recipeCollection', filter],
+        queryFn: async () => {
+            const res = await fetch('http://localhost:4000/api/recipe/getRecipe',{
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify(filter),
+                credentials: 'include'
+            })
+            return res.json()
+        },
+        
+    })
+    // useEffect(() => {
+    //     const fetchRecipe = async () => {
+    //         try {
+    //             setLoading(true)
+    //             const res: Response = await fetch('http://localhost:4000/api/recipe/getRecipe', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type' : 'application/json'
+    //                 },
+    //                 body: JSON.stringify(filter),
+    //                 credentials: 'include'
+    //             })
 
-                const data = await res.json()
+    //             const data = await res.json()
 
-                if (data.error) throw new Error(data.error)
+    //             if (data.error) throw new Error(data.error)
                     
-                setRecipeCollection(data)
-            } catch (error: any) {
-                console.log(`Error in the fetchRecipe useEffect function Error: ${error.message}`)
-            }
-        }
-        fetchRecipe()
-    }, [debounce])
+    //             setRecipeCollection(data)
+    //         } catch (error: any) {
+    //             console.log(`Error in the fetchRecipe useEffect function Error: ${error.message}`)
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     fetchRecipe()
+    // }, [debounce])
 
     return (
         <div className="pt-10 flex-col mx-52">
@@ -183,9 +201,9 @@ const Explore = () => {
                 className="p-4 pl-5"
                 aria-label="card recipe">
                     <RecipeCollection 
-                    
-                    recipeCollection={recipeCollection}
-                    />
+                    loading={isLoading}
+                    recipeCollection={data}
+                    />   
                 </div>
             </div>
         </div>

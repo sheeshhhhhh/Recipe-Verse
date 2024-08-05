@@ -4,19 +4,22 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 import { Recipe } from "@/Pages/Explore/Explore"
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa";
-
+import { memo } from "react";
 import RecipeSkeleton from "./RecipeSkeleton";
 
 type RecipeCollectionProps = {
   recipeCollection: Recipe[],
+  loading: boolean
 }
 
 const RecipeCollection = ({
-  recipeCollection
+  recipeCollection,
+  loading
 } : RecipeCollectionProps) => {
     const stars = [1, 2, 3, 4, 5]
-    
-    if(recipeCollection.length === 0) return <RecipeSkeleton />
+    // fix loading flickering later it's because of debounce use Effect
+    if(loading) return <RecipeSkeleton />
+    if(recipeCollection.length === 0) return <h2>no items found</h2>
 
     return (
       <div className="w-full h-fit grid grid-cols-4 gap-5">
@@ -79,4 +82,4 @@ const RecipeCollection = ({
     )
 }
 
-export default RecipeCollection
+export default memo(RecipeCollection)
