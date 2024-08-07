@@ -23,11 +23,13 @@ type Author = {
 }
 
 type AuthorProfileType = {
-    author: Author
+    author: Author,
+    postId: string
 }
 
 const AuthorProfile = ({
-    author
+    author,
+    postId
 } : AuthorProfileType) => {
 
     const { user } = useAuthContext()
@@ -63,7 +65,7 @@ const AuthorProfile = ({
                         {
                             isOwner ? 
                             <Button className="w-[350px] rounded-lg">Edit Profile</Button> : 
-                            <FollowUser authorId={author.id} />
+                            <FollowUser postId={postId} authorId={author.id} />
                         }
 
                     </div>

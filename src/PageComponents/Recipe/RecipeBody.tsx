@@ -32,7 +32,31 @@ const RecipeBody = ({
     author
 } : RecipeBodyType) => {
 
-
+    const cookingTime = (time: number): { time: number, unit: string}[] => {
+        const isHour = time >= 60;
+    
+        if (!isHour) {
+            return  [{
+                time: time,
+                unit: 'minutes'
+            }]
+        }
+    
+        const hours = Math.floor(time / 60);
+        const minutes = time % 60;
+    
+        return [
+            {
+                time: hours,
+                unit: 'hours'
+            },
+            {
+                time: minutes,
+                unit: 'minutes'
+            }
+        ];
+    };
+        
     // do late
     return (
         <main>
@@ -58,10 +82,37 @@ const RecipeBody = ({
                     </div>
                 </CardHeader>
                 <CardContent className="py-[35px] px-[64px]">
-                    <p className="max-w-[745px] indent-7">
+                    <p className="max-w-[745px] indent-7 text-xl font-semibold">
                         {recipe.description}
                     </p>
+                    <div className="mt-4 flex gap-6">
+
+                        <div className="pl-9">
+                            <h2 className="font-bold text-2xl mb-3">Ingredient</h2>
+                            {recipe.ingredients?.map((ingredient) => (
+                                <li className="pl-2">
+                                    {ingredient}
+                                </li>
+                            ))}
+                        </div>
+
+                        <div>
+                            <h2 className="font-bold text-2xl mb-3">Cooking Time</h2>
+                            {cookingTime(Number(recipe.cookingTime)).map((cookingTime) => {
+                                return (
+                                    <div className="flex gap-1">
+                                        <p className="text-lg font-medium">{cookingTime.time}</p>
+                                        <h2 className="text-lg font-medium">{cookingTime.unit}</h2>
+                                    </div>
+                                )
+                            })}
+                        </div>
+
+                    </div>
                 </CardContent>
+                <CardFooter>
+                    {/* do comments here */}
+                </CardFooter>
             </Card>
         </main>
     )

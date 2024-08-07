@@ -5,13 +5,15 @@ import toast from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 
 type FollowUserProps = {
+    postId: string,
     authorId: string,
     className?: string
 }
 
 const FollowUser = ({
     authorId,
-    className
+    className,
+    postId
 } : FollowUserProps) => {
     const queryClient = useQueryClient();
 
@@ -54,6 +56,20 @@ const FollowUser = ({
             queryClient.setQueryData(['following', authorId], () => context?.previousState)
             toast.error('failed to follow')
         },
+        onSuccess: (data, variable, context) => {
+
+            queryClient.setQueryData(['Viewrecipe', postId], (oldData: any) => {
+                if(!oldData) return
+                return  {
+                    ...oldData,
+                    author: {
+                        ...oldData.author,
+                        followerCount: (oldData.author.followerCount || 0) + 1
+                    }
+                }
+            })
+
+        },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ['following', authorId] })
         }
@@ -80,9 +96,22 @@ const FollowUser = ({
             return { previousState }
         },
         onError(error, variables, context) {
-            console.log(variables)
             queryClient.setQueryData(['following', authorId], () => context?.previousState)
             toast.error('failed to unfollow')
+        },
+        onSuccess: (data, variable, context) => {
+
+            queryClient.setQueryData(['Viewrecipe', postId], (oldData: any) => {
+                if(!oldData) return
+                return {
+                    ...oldData,
+                    author: {
+                        ...oldData.author,
+                        followerCount: (oldData.author.followerCount || 0) - 1
+                    }
+                }
+            })
+
         },
         onSettled: () => {
             queryClient.invalidateQueries({ queryKey: ['following', authorId] })
