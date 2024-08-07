@@ -63,22 +63,35 @@ const NavBar = () => {
                     {/* show only when not authenticated authenticated */}
                     <div className='flex items-center gap-3'>
                         {/* make a dynamic where if not logged in then render this but if login in then render log out or select menu something */}
-                        {!authenticated && 
-                        <div>
-                            <Link to={'/login'}>
-                                <Button 
-                                variant={'outline'} 
-                                className='text-base'>  
-                                        Login
-                                </Button>
-                            </Link>
+                        {
+                            !authenticated ? 
+                            <div>
+                                <Link to={'/login'}>
+                                    <Button 
+                                    variant={'outline'} 
+                                    className='text-base'>  
+                                            Login
+                                    </Button>
+                                </Link>
 
-                            <Link to={'/signUp'}>
-                                <Button className='text-base'>
-                                    sign Up
+                                <Link to={'/signUp'}>
+                                    <Button className='text-base'>
+                                        sign Up
+                                    </Button>
+                                </Link>
+                            </div> :
+
+                            <div>
+                                {/* fix later and also make hook for this */}
+                                <Button onClick={async () => {
+                                    const res = await fetch('http://localhost:4000/api/auth/logout', { credentials: 'include' })
+                                    const data = await res.json()
+                                    if(data.message === 'Successfully logged out') window.location.assign('http://localhost:3000/login')
+                                }}>
+                                    Logout
                                 </Button>
-                            </Link>
-                        </div>}
+                            </div>
+                        }
 
                         <ThemeSwitch />
                     </div>
