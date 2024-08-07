@@ -24,7 +24,7 @@ const ExploreSearch = ({
   }, [debounce])
 
   return (
-    <form className="relative ml-auto flex-1 md:grow-0 items-center">
+    <div className="relative ml-auto flex-1 md:grow-0 items-center">
         <Search className="absolute left-2.5 top-3 h-4 w-4 text-muted-foreground" />
         <Input 
         name="search"
@@ -34,7 +34,7 @@ const ExploreSearch = ({
         placeholder="Search..."
         className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
         />
-    </form>
+    </div>
   )
 }
 

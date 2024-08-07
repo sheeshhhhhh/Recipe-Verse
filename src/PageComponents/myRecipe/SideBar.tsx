@@ -16,17 +16,6 @@ const SideBar = () => {
           
           <div>
             <NavLink
-            to={'/myrecipe/edit'}
-            className={({ isActive }) => (
-              `${isActive ? "underline-offset-8 underline" : ""} navlink`
-            )}
-            >
-              Edit
-            </NavLink>
-          </div>
-
-          <div>
-            <NavLink
             to={'/myrecipe/draft'}
             className={({ isActive }) => (
               `${isActive ? "underline-offset-8 underline" : ""} navlink`

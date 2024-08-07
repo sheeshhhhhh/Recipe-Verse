@@ -16,7 +16,7 @@ const TagsandMealType = ({
     setRecipeInfo
 } : TagsandMealTypeProps) => {
 
-    const { handleChangeObject, handleChangeString } = useChange<recipeInfoType>()
+    const { handleChangeString } = useChange<recipeInfoType>()
  
     return (
         <div className="grid grid-cols-2 gap-4">

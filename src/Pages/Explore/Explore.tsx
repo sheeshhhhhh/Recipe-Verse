@@ -16,6 +16,7 @@ export type FilterType = {
 }
 
 export type Recipe = {
+    id: string,
     rating: number,
     title: string,
     image: string[] | undefined,
@@ -141,7 +142,7 @@ const Explore = () => {
         mealType: '',
         cuisine: '',
         mealPreference: '',
-        cost: undefined
+        cost: 0
     })
 
     const { data, isLoading } = useQuery({

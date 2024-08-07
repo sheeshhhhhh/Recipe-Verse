@@ -2,7 +2,7 @@ import '@/App.css'
 import '@/index.css'
 import NavBar from './PageComponents/NavBar'
 
-import { Routes, Route, Router, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Home from './Pages/Home'
 import Login from './Pages/Login/Login'
@@ -45,7 +45,7 @@ function App() {
       <div>
         <Routes>
           {/* USE FOR USER AND RECIPE NEEDED TO BE AUTHENTICATED */}
-          <Route path='/recipe/:id' element={user ? null : <Navigate to='/login' /> } />
+          <Route path='/recipe/:id' element={user ? <Recipe /> : <Navigate to='/login' /> } />
           <Route path='/myrecipe/*' element={user ? <MyRecipe /> : <Navigate to='/login' />} />
           <Route path='/profile' element={user ? null : <Navigate to='/login' />} />
         </Routes>

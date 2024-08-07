@@ -19,7 +19,7 @@ const Filter = ({
 } : FilterProps) => {
 
     const cuisine = ['Italian', 'Chinese', 'Mexican', 'Filipino', 'Japanese', 'American', 'Korean', 'Arabic']
-    const mealTypes = ['breakfast', 'lunch', 'dinner', 'snacks']
+    const mealTypes = ['breakfast', 'lunch', 'dinner', 'snack', 'dessert']
 
     const { handleChangeString, handleChangeNumber, handleChangeObject } = useChange<FilterType>()
 

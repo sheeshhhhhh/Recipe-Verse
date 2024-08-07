@@ -15,6 +15,7 @@ const CuisineandMealPreferences = ({
 } : CuisineandMealPreferencesProps) => {
 
     const { handleChangeString } = useChange<recipeInfoType>()
+    const cuisine = ['Italian', 'Chinese', 'Mexican', 'Filipino', 'Japanese', 'American', 'Korean', 'Arabic']
 
     return (
         <div className="grid grid-cols-2 gap-4">
@@ -28,11 +29,9 @@ const CuisineandMealPreferences = ({
                         <SelectValue placeholder="Select cuisine" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="italian">Italian</SelectItem>
-                        <SelectItem value="mexican">Mexican</SelectItem>
-                        <SelectItem value="asian">Asian</SelectItem>
-                        <SelectItem value="american">American</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
+                        {cuisine.map((item, idx) => 
+                            <SelectItem key={idx} value={item.toLowerCase()}>{item}</SelectItem>)
+                        }
                     </SelectContent>
                 </Select>
             </div>
@@ -46,11 +45,8 @@ const CuisineandMealPreferences = ({
                         <SelectValue placeholder="Select meal preference" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="vegetarian">Vegetarian</SelectItem>
-                        <SelectItem value="vegan">Vegan</SelectItem>
-                        <SelectItem value="gluten-free">Gluten-Free</SelectItem>
-                        <SelectItem value="dairy-free">Dairy-Free</SelectItem>
-                        <SelectItem value="omnivore">Omnivore</SelectItem>
+                        <SelectItem value="comfort">comfort food</SelectItem>
+                        <SelectItem value="healthy">healthy food</SelectItem>
                     </SelectContent>
                 </Select>
             </div>

@@ -51,7 +51,8 @@ export default function MyRecipeForm({
             cuisine: '',
             mealType: '',
             mealPreference: '',
-            instruction: ''
+            instruction: '',
+            rating: 0 // this is nothing
         }
 )
     const { handleChangeObject } = useChange<recipeInfoType>()
