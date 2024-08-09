@@ -30,7 +30,6 @@ const FollowUser = ({
             return data.message === 'following' ? true : false
         }
     })
-
     // optimistic update follow
     const { mutate: followMutate, isPending: followisPending } = useMutation({
         mutationKey: ['followUser', authorId],
@@ -53,7 +52,7 @@ const FollowUser = ({
             return { previousState }
         },
         onError(error, variables, context) {
-            queryClient.setQueryData(['following', authorId], () => context?.previousState)
+            queryClient.setQueryData(['following', authorId], () => context?.previousState ? context?.previousState : false)
             toast.error('failed to follow')
         },
         onSuccess: (data, variable, context) => {

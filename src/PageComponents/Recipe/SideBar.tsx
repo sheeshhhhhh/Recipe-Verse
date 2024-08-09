@@ -104,7 +104,7 @@ const SideBar = ({
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <div className="w-full h-full">
-                                <a href="" className="w-full flex flex-col items-center px-[6px] py-[1px]">
+                                <a href="#comments" className="w-full flex flex-col items-center px-[6px] py-[1px]">
                                     <div className="p-2">
                                         <MessageSquareIcon className="size-[24px]" />
                                     </div>

@@ -45,7 +45,7 @@ function App() {
       <div>
         <Routes>
           {/* USE FOR USER AND RECIPE NEEDED TO BE AUTHENTICATED */}
-          <Route path='/recipe/:id' element={user ? <Recipe /> : <Navigate to='/login' /> } />
+          <Route path='/recipe/:id' element={<Recipe />  }/>
           <Route path='/myrecipe/*' element={user ? <MyRecipe /> : <Navigate to='/login' />} />
           <Route path='/profile' element={user ? null : <Navigate to='/login' />} />
         </Routes>

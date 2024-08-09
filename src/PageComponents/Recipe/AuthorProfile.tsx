@@ -33,7 +33,7 @@ const AuthorProfile = ({
 } : AuthorProfileType) => {
 
     const { user } = useAuthContext()
-    const isOwner = user.id === author.id
+    const isOwner = user?.id === author.id
 
     return (
         <aside className="w-[375px] flex flex-col gap-4">

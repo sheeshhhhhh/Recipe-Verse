@@ -14,7 +14,8 @@ const Recipe = () => {
                 credentials: 'include'
             })
             return res.json()
-        }
+        },
+        refetchOnWindowFocus: false
     })
 
     if(isLoading) return
@@ -34,9 +35,11 @@ const Recipe = () => {
                 />
 
                 <RecipeBody
+                postId={data.id}
                 createdAt={data.createdAt}
                 recipe={data.recipe}
                 author={data.author}
+                comments={data.comments}
                 />
 
                 <AuthorProfile 
