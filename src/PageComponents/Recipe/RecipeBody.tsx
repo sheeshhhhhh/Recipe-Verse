@@ -94,7 +94,9 @@ const RecipeBody = ({
             <Card className="w-[875px]">
                     <div>
                         {/* put carousel here later */}
-                        <ImageCarousel images={images} />
+                        <ImageCarousel 
+                        autoSlide
+                        images={images} />
                     </div>
                 <CardHeader className="pt-[32px] px-[64px] pb-0">
                     {/* <div className="flex gap-3 pl-6">

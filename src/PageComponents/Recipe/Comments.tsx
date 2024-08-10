@@ -40,7 +40,7 @@ const Comments = ({
       <div className='flex flex-col gap-5'>
         {comments?.map((comment) => {
           
-          const isAuthor = comment.user.id === user.id // introduce delete when is author
+          const isAuthor = comment.user.id === user?.id // introduce delete when is author
           
           return (
             <div key={comment.id}>
@@ -50,7 +50,7 @@ const Comments = ({
               <div aria-label='replyComments'>
                 {comment?.childComments?.map((childComment) => {
                     
-                    const childComment_isAuthor = user.id === childComment.user.id
+                    const childComment_isAuthor = user?.id === childComment.user.id
 
                     return (
                       <div
