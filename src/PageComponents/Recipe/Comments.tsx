@@ -14,6 +14,10 @@ import { FormMessage } from '@/components/ui/form'
 import { CardTitle } from '@/components/ui/card'
 import LoadingSpinner from '../LoadingSpinner'
 
+// implement likes, reply and delete in child comments
+// and also make display comment dynamic for both comments and child comments
+// or make displaychildComment component
+
 type CommentsProps = {
   postId: string,  
   comments: Comment[]

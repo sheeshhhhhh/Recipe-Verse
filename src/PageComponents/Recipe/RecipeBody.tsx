@@ -11,6 +11,8 @@ import AvatarProfile from "../AvatarProfile"
 import { Recipe } from "@/Pages/Explore/Explore"
 import { format } from 'date-fns'
 import Comments from "./Comments"
+import { diffieHellman } from "crypto"
+import ImageCarousel from "../ImageCarousel"
 
 export type Author = {
     id: string,
@@ -38,7 +40,7 @@ export type Comment = {
     createdAt: Date
 }
 
-type RecipeBodyType = {
+export type RecipeBodyType = {
     postId: string,
     createdAt: Date
     recipe: Partial<Recipe & {
@@ -80,15 +82,19 @@ const RecipeBody = ({
             }
         ];
     };
-        
+    
+    const images = [
+        'https://cafedelites.com/wp-content/uploads/2018/04/Chicken-Tikka-Masala-IMAGE-5-2048x1365.jpg', 
+        'https://www.allrecipes.com/thmb/N3hqMgkSlKbPmcWCkHmxekKO61I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Easyspaghettiwithtomatosauce_11715_DDMFS_1x2_2425-c67720e4ea884f22a852f0bb84a87a80.jpg', 
+        'https://www.recipetineats.com/tachyon/2018/04/Chicken-Tikka-Masala_0.jpg?resize=964%2C1350&zoom=1'
+    ]
+    
     return (
         <main>
             <Card className="w-[875px]">
                     <div>
-                        {/* put slider here later */}
-                        <img 
-                         className="w-auto h-auto rounded-t-lg px-[1px]"
-                         src="https://www.allrecipes.com/thmb/N3hqMgkSlKbPmcWCkHmxekKO61I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Easyspaghettiwithtomatosauce_11715_DDMFS_1x2_2425-c67720e4ea884f22a852f0bb84a87a80.jpg" />
+                        {/* put carousel here later */}
+                        <ImageCarousel images={images} />
                     </div>
                 <CardHeader className="pt-[32px] px-[64px] pb-0">
                     {/* <div className="flex gap-3 pl-6">
@@ -174,5 +180,6 @@ const RecipeBody = ({
         </main>
     )
 }
+
 
 export default RecipeBody
