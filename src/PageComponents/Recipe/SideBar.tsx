@@ -4,6 +4,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useredirect } from "@/lib/redirect"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { BookmarkIcon, HeartIcon, MessageSquareIcon, Variable } from "lucide-react"
 import toast from "react-hot-toast"
@@ -25,6 +26,7 @@ const SideBar = ({
 } : SidebarProps) => {
 
     const queryClient = useQueryClient();
+    const { NavigateWithNext } = useredirect()
 
     const { data, mutate: LikePost, isPending: LikePostPending } = useMutation({
         mutationKey: ['like', postId],
@@ -34,6 +36,7 @@ const SideBar = ({
                 credentials: 'include'
             })
             const data = await res.json() 
+            if(!data.auth) return NavigateWithNext('/login')
             if(data.error) throw new Error(data.error)
             toast.success(data.message)
             return data
@@ -42,6 +45,7 @@ const SideBar = ({
             toast.error(error.message)
         },
         onSuccess: (data, variable, context) => {
+            if(!data) return // this means that i just return for navigate
             queryClient.setQueryData(['Viewrecipe', postId], (oldData: any) => {
                 return {
                     ...oldData,
@@ -59,6 +63,7 @@ const SideBar = ({
                 credentials: 'include'
             })
             const data = await res.json()
+            if(!data.auth) return NavigateWithNext('/login')
             if(data.error) throw new Error(data.error)
             return data
         },
@@ -66,6 +71,7 @@ const SideBar = ({
             toast.error(error.message)
         },
         onSuccess: (data, variable, context) => {
+            if(!data) return // this means that i just return for navigate
             queryClient.setQueryData(['Viewrecipe', postId], (oldData: any) => {
                 return {
                     ...oldData,
@@ -131,7 +137,7 @@ const SideBar = ({
                                         ${isFavorite?.isFavorited ? "fill-violet-700 text-violet-700" : isFavorited && 'fill-violet-700 text-violet-700'}`} />
                                         {/* isFavorite is coming from fetch there fore the most updated */}
                                     </div>
-                                    <p>{favoritesCount}</p>
+                                    <p>{favoritesCount && favoritesCount}</p>
                                 </button>
                             </div>
                         </TooltipTrigger>

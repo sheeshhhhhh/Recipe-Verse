@@ -1,8 +1,10 @@
-import { Button } from '@/components/ui/button'
-import { Link, NavLink, useLocation } from 'react-router-dom'
-import ThemeSwitch from './ThemeSwitch'
 import { NoNavBarPages } from '@/App'
+import { Button } from '@/components/ui/button'
 import { useAuthContext } from '@/context/authContext'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import ThemeSwitch from '../ThemeSwitch'
+import NotificationButton from './Notification'
+import toast from 'react-hot-toast'
 
 const NavBar = () => {
     const location = useLocation()
@@ -66,7 +68,7 @@ const NavBar = () => {
                         {
                             !authenticated ? 
                             <div>
-                                <Link to={'/login'}>
+                                <Link to={`/login?next=${location.pathname}`}>
                                     <Button 
                                     variant={'outline'} 
                                     className='text-base'>  
@@ -81,12 +83,14 @@ const NavBar = () => {
                                 </Link>
                             </div> :
 
-                            <div>
+                            <div className='flex gap-2'>
                                 {/* fix later and also make hook for this */}
+                                <NotificationButton />
                                 <Button onClick={async () => {
                                     const res = await fetch('http://localhost:4000/api/auth/logout', { credentials: 'include' })
                                     const data = await res.json()
-                                    if(data.message === 'Successfully logged out') window.location.assign('http://localhost:3000/login')
+                                    if(data.error) return toast.error('failed to log out') 
+                                    window.location.assign(`http://localhost:3000${location.pathname}`)
                                 }}>
                                     Logout
                                 </Button>

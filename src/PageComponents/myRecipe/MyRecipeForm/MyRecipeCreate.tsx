@@ -4,13 +4,14 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 
-import { FormEvent, MouseEvent, useState } from "react"
+import { FormEvent, MouseEvent, useEffect, useState } from "react"
 
 import { Recipe } from "@/Pages/Explore/Explore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import useChange from "@/lib/useChange"
+import { ImagesIcon } from "lucide-react"
 
 
 import CuisineandMealPreferences from "./CuisineandMealPreferences"
@@ -20,9 +21,11 @@ import Instruction from "./Instruction"
 import TagsandMealType from "./TagsandMealType"
 import TimeandServing from "./TimeandServing"
 import LoadingSpinner from "@/PageComponents/LoadingSpinner"
+import RecipeImageInput from "./RecipeImageInput"
+import ImageCarousel from "@/PageComponents/ImageCarousel"
 
 
-export interface recipeInfoType extends Recipe  {}
+export interface recipeInfoType extends Partial<Recipe>  {}
 
 // shoudl make this component viable for both create and edit
 export type MyRecipeProps = {
@@ -53,8 +56,7 @@ export default function MyRecipeForm({
             mealPreference: '',
             instruction: '',
             rating: 0 // this is nothing
-        }
-)
+    })
     const { handleChangeObject } = useChange<recipeInfoType>()
 
     // make a hook that will handle the submit and loading where when loadingthe input will be loading state
@@ -80,8 +82,7 @@ export default function MyRecipeForm({
                 </div>
                 <div className="grid gap-2">
                     {/* mkae a handle Change file in the recipeInfoTypes later */}
-                    <Label htmlFor="image">Recipe Image</Label>
-                    <Input id="image" type="file" />
+                    <RecipeImageInput recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
                 </div>
                     <Description recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
                     <Instruction recipeInfo={recipeInfo} setRecipeInfo={setRecipeInfo} />
@@ -105,6 +106,7 @@ type PreviewProps = {
 
 function Preview({ recipeInfo } : PreviewProps) {   
 
+
     return (
         <div className="bg-muted p-6 rounded-lg h-fit">
             <div className="grid gap-4">
@@ -119,12 +121,7 @@ function Preview({ recipeInfo } : PreviewProps) {
                 </div>
             </div>
             <div className="flex items-center gap-4">
-                <img 
-                src="/placeholder.svg" 
-                alt="Recipe Image"
-                width={260} 
-                height={200} 
-                className="rounded-lg" />
+                <DisplayImage images={recipeInfo.image} />
                 <div className="grid gap-2 ">
                     <div className="text-muted-foreground">
                         <span className="font-medium">Cooking Time:</span> {recipeInfo.cookingTime}
@@ -152,7 +149,7 @@ function Preview({ recipeInfo } : PreviewProps) {
             <div>
                 <h3 className="text-xl font-bold">Ingredients</h3>
                 <ul className="list-disc pl-6 space-y-2">
-                    {recipeInfo.ingredients.map((Ingredient, idx) => <li key={idx}>{Ingredient}</li>)}
+                    {recipeInfo?.ingredients?.map((Ingredient, idx) => <li key={idx}>{Ingredient}</li>)}
                 </ul>
             </div>
             <div className="w-[465px]">
@@ -166,6 +163,41 @@ function Preview({ recipeInfo } : PreviewProps) {
     )
 }
 
+type DisplayImageProps = {
+    images: string[] | File[] | undefined
+}
+
+function DisplayImage({ images }: DisplayImageProps) {
+    const [imageURL, setImageURL] = useState<string[]>([])
+    
+    useEffect(() => {
+        setImageURL([])
+        images?.forEach((image) => {
+            if(image instanceof File) {
+                const reader = new FileReader();
+                reader.onload = (e: any) => {
+                    setImageURL(prev => [...prev, e.target.result])
+                }
+                reader.readAsDataURL(image)
+            } else {
+                setImageURL(prev => [...prev, image])
+            }   
+        })
+    }, [images])
+
+    if(!imageURL.length) return (
+        <div className="w-[300px]">
+            <ImagesIcon width={300} size={150} />
+            <h2 className="text-lg font-semibold text-muted-foreground text-center">No Images</h2>
+        </div>
+    )
+
+    return (
+        <div className="w-[300px]">
+            <ImageCarousel size={300} images={imageURL} />
+        </div>
+    )
+}
 
 function StarIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -187,22 +219,22 @@ function StarIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 
-function XIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  )
-}
+// function XIcon(props: React.SVGProps<SVGSVGElement>) {
+//   return (
+//     <svg
+//       {...props}
+//       xmlns="http://www.w3.org/2000/svg"
+//       width="24"
+//       height="24"
+//       viewBox="0 0 24 24"
+//       fill="none"
+//       stroke="currentColor"
+//       strokeWidth="2"
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//     >
+//       <path d="M18 6 6 18" />
+//       <path d="m6 6 12 12" />
+//     </svg>
+//   )
+// }

@@ -19,7 +19,7 @@ export type Recipe = {
     id: string,
     rating: number,
     title: string,
-    image: string[] | undefined,
+    image: string[] | File[] | undefined,
     description: string,
     ingredients: string [],
     cookingTime: string,
@@ -160,32 +160,6 @@ const Explore = () => {
         },
         
     })
-    // useEffect(() => {
-    //     const fetchRecipe = async () => {
-    //         try {
-    //             setLoading(true)
-    //             const res: Response = await fetch('http://localhost:4000/api/recipe/getRecipe', {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type' : 'application/json'
-    //                 },
-    //                 body: JSON.stringify(filter),
-    //                 credentials: 'include'
-    //             })
-
-    //             const data = await res.json()
-
-    //             if (data.error) throw new Error(data.error)
-                    
-    //             setRecipeCollection(data)
-    //         } catch (error: any) {
-    //             console.log(`Error in the fetchRecipe useEffect function Error: ${error.message}`)
-    //         } finally {
-    //             setLoading(false)
-    //         }
-    //     }
-    //     fetchRecipe()
-    // }, [debounce])
 
     return (
         <div className="pt-10 flex-col mx-52">

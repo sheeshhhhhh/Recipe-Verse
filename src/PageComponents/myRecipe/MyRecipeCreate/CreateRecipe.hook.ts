@@ -1,9 +1,11 @@
 import { Recipe } from '@/Pages/Explore/Explore'
 import { useState } from 'react'
 import formData from './formData.utils'
+import { useNavigate } from 'react-router-dom'
 
 const useCreateRecipe = () => {
   const [loading, setLoading] = useState<boolean>(false)
+  const navigate = useNavigate()
 
   const create = async (recipeData: Recipe) => {
     setLoading(true)
@@ -21,7 +23,7 @@ const useCreateRecipe = () => {
 
       if(data.error) throw new Error(data.error)
 
-      // handle Data here or redirect
+      navigate('/myrecipe/dashboard')
     } catch (error: any) {
       console.log('Error in createfunction in the useCreateRecipe hook' + 'Error: ' + error.message)
     } finally {
@@ -43,7 +45,7 @@ const useCreateRecipe = () => {
 
       if (data.error) throw new Error(data.error)
 
-      // handle later
+      navigate('/myrecipe/draft')
     } catch (error: any) {
       console.log('Error in createfunction in the useCreateRecipe hook Error: ' + error.message)
     }

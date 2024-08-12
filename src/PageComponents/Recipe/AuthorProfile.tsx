@@ -60,7 +60,7 @@ const AuthorProfile = ({
 
                     </div>
 
-                    <div className="flex justify-center">
+                    {user && <div className="flex justify-center">
                         
                         {
                             isOwner ? 
@@ -68,7 +68,7 @@ const AuthorProfile = ({
                             <FollowUser postId={postId} authorId={author.id} />
                         }
 
-                    </div>
+                    </div>}
 
                     {
                         author.userInfo.bio  && 

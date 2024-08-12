@@ -6,13 +6,15 @@ import { useEffect, useState } from "react"
 type ImageCarouselProps = {
     images: string[],
     autoSlide?: boolean,
-    Slideinterval?: number
+    Slideinterval?: number,
+    size?: number
 }
 
 const ImageCarousel = ({
     images,
     autoSlide = false,
-    Slideinterval = 2500
+    Slideinterval = 2500,
+    size = 873
 }: ImageCarouselProps) => {
     const [curr, setCurr] = useState<number>(0)
 
@@ -54,18 +56,26 @@ const ImageCarousel = ({
     return (
         <div className="overflow-hidden relative rounded-t-lg">
             <div 
-            className="flex transition-transform ease-out duration-500"
+            className={"flex transition-transform ease-out duration-500 "}
             style={{ transform: `translateX(-${curr * 100}%)` }}
             >
-                {images?.map((image) => (
-                    <div className="min-w-[875px] w-full h-auto flex items-center justify-center bg-foreground">
+                {images?.map((image) => {
+                    return(
+                    <div 
+                    key={image} 
+                    className={`w-full flex items-center justify-center bg-foreground`}
+                    style={{ minWidth: `${size}px` }}
+                    >
                         <img 
                         loading="lazy"
-                        width={873}
-                        className="h-auto w-auto rounded-t-lg bg-cover max-h-[580px]" 
-                        src={image}  />
+                        className={`w-auto w-auto rounded-t-lg bg-cover max-h-[580px]`} 
+                        src={image}  
+                        alt="carousel"
+                        />
                     </div>
-                ))}
+                    )
+                })}
+                
             </div>
             <div className="absolute inset-0 flex items-center justify-between p-4">
                 <Button

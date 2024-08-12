@@ -7,11 +7,9 @@ import {
     CardTitle,
     CardDescription
 } from "@/components/ui/card"
-import AvatarProfile from "../AvatarProfile"
 import { Recipe } from "@/Pages/Explore/Explore"
 import { format } from 'date-fns'
 import Comments from "./Comments"
-import { diffieHellman } from "crypto"
 import ImageCarousel from "../ImageCarousel"
 
 export type Author = {

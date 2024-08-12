@@ -40,7 +40,7 @@ const Comments = ({
       <div className='flex flex-col gap-5'>
         {comments?.map((comment) => {
           
-          const isAuthor = comment.user.id === user?.id // introduce delete when is author
+          const isAuthor = comment.user?.id === user?.id // introduce delete when is author
           
           return (
             <div key={comment.id}>

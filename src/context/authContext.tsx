@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { createContext, useContext, useState, useEffect } from 'react'
 
 type AuthProviderProps = {
@@ -24,34 +25,46 @@ export const useAuthContext = () => {
 export function AuthProvider({
     children
 }: AuthProviderProps) {
-    const [user, setUser] = useState(undefined)
-    const [loading, setLoading] = useState(true)
+    // const [user, setUser] = useState(undefined)
+    // const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        setLoading(true)
-        const checkauth = async () => {
-            try {
-                const res: Response = await fetch('http://localhost:4000/api/auth/check', {
-                    credentials: 'include'
-                })
+    // useEffect(() => {
+    //     setLoading(true)
+    //     const checkauth = async () => {
+    //         try {
+    //             const res: Response = await fetch('http://localhost:4000/api/auth/check', {
+    //                 credentials: 'include'
+    //             })
 
-                const data = await res.json()
+    //             const data = await res.json()
 
-                if(data.error) throw new Error(data.error)
+    //             if(data.error) throw new Error(data.error)
                 
-                setUser(data?.user)
-            } catch (error) {
-                console.log(error)
-            } finally {
-                setLoading(false)
-            }
+    //             setUser(data?.user)
+    //         } catch (error) {
+    //             console.log(error)
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     checkauth()
+    // }, [])
+
+    const { data, isLoading } = useQuery({
+        queryKey: ['user'],
+        queryFn: async () => {
+            const res: Response = await fetch('http://localhost:4000/api/auth/check', {
+                credentials: 'include'
+            })
+            const data = await res.json()
+            if(data.error) throw new Error('failed to fectch for user')
+            return data
         }
-        checkauth()
-    }, [])
+    })
 
     const value = {
-        user,
-        loading
+        user: data?.user,
+        loading: isLoading,
     }
 
     return(
