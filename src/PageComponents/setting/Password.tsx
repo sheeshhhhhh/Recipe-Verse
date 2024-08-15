@@ -25,9 +25,12 @@ const Password = () => {
     })
 
     const { handleChangeObject } = useChange<PasswordInfoType>()
-    
     const { mutate: changePassword, isPending } = useMutation({
         mutationFn: async () => {
+            if(!passwordInfo.password || !passwordInfo.newPassword || !passwordInfo.confirmPassword) {
+                throw new Error('fill in the all the files')
+            }
+
             const res = await fetch('http://localhost:4000/api/user/changePassword', {
                 method: 'POST',
                 headers: {
@@ -99,6 +102,7 @@ const Password = () => {
             </CardContent>
             <CardFooter>
                 <Button
+                onClick={() => changePassword()}
                 disabled={isPending}
                 >
                     { isPending ? <LoadingSpinner /> : "ChangePassword" }
