@@ -2,7 +2,7 @@ import '@/App.css'
 import '@/index.css'
 import NavBar from './PageComponents/Navbar/NavBar'
 
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 
 import About from './Pages/About'
 import Explore from './Pages/Explore/Explore'
@@ -12,6 +12,7 @@ import MyRecipe from './Pages/MyRecipe/MyRecipe'
 import Recipe from './Pages/Recipe/Recipe'
 import SignUp from './Pages/SignUp/SignUp'
 import { useAuthContext } from './context/authContext'
+import Setting from './Pages/Setting/Setting'
 
 // this will include all the pages where navbar shouldn's show up
 export const NoNavBarPages = [
@@ -21,6 +22,7 @@ export const NoNavBarPages = [
 
 function App() {
 
+  const location = useLocation()
   const { loading, user} = useAuthContext()
   
   if(loading) return
@@ -46,8 +48,9 @@ function App() {
         <Routes>
           {/* USE FOR USER AND RECIPE NEEDED TO BE AUTHENTICATED */}
           <Route path='/recipe/:id' element={<Recipe />  }/>
-          <Route path='/myrecipe/*' element={user ? <MyRecipe /> : <Navigate to='/login' />} />
-          <Route path='/profile' element={user ? null : <Navigate to='/login' />} />
+          <Route path='/myrecipe/*' element={user ? <MyRecipe /> : <Navigate to={`/login?next=${location.pathname}`} />} />
+          <Route path='/profile' element={user ? null : <Navigate to={`/login?next=${location.pathname}`} />} />
+          <Route path='/settings' element={user ? <Setting /> : <Navigate to={`/login?next=${location.pathname}`} />} />
         </Routes>
       </div>
     </div>

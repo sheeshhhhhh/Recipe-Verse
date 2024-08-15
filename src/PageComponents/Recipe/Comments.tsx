@@ -1,7 +1,7 @@
 
 import { useAuthContext } from '@/context/authContext'
 import AvatarProfile from '../AvatarProfile'
-import { Author, childComment, Comment } from './RecipeBody'
+import { childComment, Comment } from './RecipeBody'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { format } from 'date-fns'
@@ -56,7 +56,7 @@ const Comments = ({
                       <div
                       className='pl-[64px] mt-2'
                       key={childComment.id}>
-                        <DisplayComment isAuthor={childComment_isAuthor} comment={childComment} postId={postId} />
+                        <DisplayComment parentCommentId={comment.id} isChild isAuthor={childComment_isAuthor} comment={childComment} postId={postId} />
                       </div>
                     )
                   })}
@@ -75,12 +75,16 @@ type DisplayCommentProps = {
   isAuthor: boolean,
   comment: Comment | childComment,
   postId: string,
+  isChild?: boolean,
+  parentCommentId?: string
 }
 
 const DisplayComment = ({
   isAuthor,
   comment,
-  postId
+  postId,
+  parentCommentId,
+  isChild=false
 } : DisplayCommentProps) => {
 
   return (
@@ -101,12 +105,21 @@ const DisplayComment = ({
           <p className='text-lg mt-2 mb-4 '>{comment.body}</p>
         </div>
         {/* make this component later */}
-        <CommentButton 
+        {isChild ? 
+        <ChildCommentButton 
+        ParentcommentId={parentCommentId || ''}
         isAuthor={isAuthor}
         postId={postId}
         commentId={comment.id}
         commentLikes={comment.likes}
         />
+        :
+        <CommentButton 
+        isAuthor={isAuthor}
+        postId={postId}
+        commentId={comment.id}
+        commentLikes={comment.likes}
+        />}
       </div>
 
     </div>
@@ -204,6 +217,121 @@ const CommentInput = ({
   )
 }
 
+type ChildCommentButtonProps = {
+  isAuthor: boolean,
+  postId: string,
+  commentId: string,
+  commentLikes: number,
+  ParentcommentId: string
+}
+
+const ChildCommentButton = ({
+  isAuthor,
+  postId,
+  commentId,
+  ParentcommentId,
+  commentLikes
+} : ChildCommentButtonProps) => {
+  if(!ParentcommentId) throw new Error('parent commentId is needed') // just a warning
+
+  const [openReply, setOpenreply] = useState<boolean>(false)
+  const queryClient = useQueryClient();
+
+  const { mutate: likeComment, isPending: likesPending, data: like } = useMutation({
+    mutationFn: async (commentId: string) => {
+      const res = await fetch(`http://localhost:4000/api/post/likeChildComment/${commentId}`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+      const data = await res.json()
+      if(data.error) throw new Error(data.error)
+      if(!data?.success) throw new Error('like failed')
+
+      return data
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['Viewrecipe', postId] })
+    }
+  })
+
+  const { mutate: deleteComment, isPending: deletePending, variables: CommentId } = useMutation({
+    mutationFn: async (commentId: string) => {
+      const res = await fetch(`http://localhost:4000/api/post/deleteChildComment/${commentId}`, {
+        method: 'POST',
+        credentials: 'include'
+      })
+      const data = await res.json()
+      if(data.error) throw new Error(data.error)
+      return data
+    },
+    onSuccess: (data, commentId) => {
+      queryClient.invalidateQueries({ queryKey: ['Viewrecipe', postId] })
+    },
+  })
+
+  // fix later only can like one person because it depends on the data: like
+  // should introduce like model in prisma
+
+  const isLiked = commentId === like?.commentId
+
+  return (
+    <div>        
+      {openReply ?
+
+      <ReplyComment 
+      setOpenreply={setOpenreply}
+      postId={postId} 
+      commentId={ParentcommentId} 
+      isChild
+      />
+      
+      :
+      
+      <div className='flex items-center gap-7 mt-1'>
+
+        <Button 
+        variant={'ghost'}
+        disabled={likesPending}
+        onClick={() => !isLiked && likeComment(commentId)} // making sure that cannot like again
+        aria-label='likes'
+        title='likes' 
+        className='flex items-center p-2 cursor-pointer rounded-xl hover:bg-muted'
+        >
+          <ThumbsUpIcon className={`mr-2 ${isLiked && 'fill-blue-600 text-blue-600 transition-colors'}`} />
+          <p className={`text-lg ${isLiked && 'text-blue-600 transition-colors'}`}>{commentLikes} likes </p>
+        </Button>
+
+        <Button 
+        onClick={() => setOpenreply((prev) => !prev)}
+        variant={'ghost'}
+        aria-label='reply' 
+        title='Reply' 
+        className='flex items-center p-2 cursor-pointer rounded-xl hover:bg-muted'>
+          <MessageCircleIcon className='mr-2' />
+          <p className='text-lg '>Reply</p> 
+        </Button>
+
+        {isAuthor && 
+          <div aria-label='deleteComment' className='flex items-center m-1 p-1 cursor-pointer rounded-xl hover:bg-muted' >
+            {/* specifying deletePending and commentid for onely one loading when deleting */}
+            <Button 
+            className='flex items-center justify-center w-[126px] hover:'
+            disabled={deletePending && CommentId === commentId}
+            onClick={() => deleteComment(commentId)}
+            size={'sm'}
+            variant={'destructive'}
+            >
+              {deletePending && commentId === commentId ? <LoadingSpinner className='h-3 w-3' /> : 'deleteComment' } 
+            </Button>
+          </div>
+        }
+      </div>
+
+    }
+    </div>
+  )
+}
+
 type CommentButtonProps = {
   isAuthor: boolean,
   postId: string,
@@ -284,10 +412,6 @@ const CommentButton = ({
       toast.error(error.message)
     }
   })
-  // implement reply to comments // kind of complex need to make another component
-  // and implement delete Comment when author do so
-  // implement unlike
-
   // fix later only can like one person because it depends on the data: like
   // should introduce like model in prisma
 
@@ -352,13 +476,15 @@ const CommentButton = ({
 type ReplyCommentProps = {
   setOpenreply: Dispatch<SetStateAction<boolean>>,
   postId: string,
-  commentId: string
+  commentId: string,
+  isChild?: boolean
 }
 
 const ReplyComment = ({
   postId,
   commentId,
-  setOpenreply
+  setOpenreply, 
+  isChild=false
 } : ReplyCommentProps) => {
   const [replyInput, setReplyInput] = useState<string>('')
 
@@ -367,7 +493,7 @@ const ReplyComment = ({
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault()
-      const res = await fetch('http://localhost:4000/api/post/replyComment/' + commentId, {
+      const res = await fetch(`http://localhost:4000/api/post/reply${isChild ? 'Child' : ''}Comment/${commentId}`, {
         method: 'POST',
         headers: {
           'Content-Type' : 'application/json'

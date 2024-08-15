@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/tooltip"
 import { useredirect } from "@/lib/redirect"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { BookmarkIcon, HeartIcon, MessageSquareIcon, Variable } from "lucide-react"
+import { BookmarkIcon, HeartIcon, MessageSquareIcon } from "lucide-react"
 import toast from "react-hot-toast"
   
 type SidebarProps = {
@@ -36,8 +36,8 @@ const SideBar = ({
                 credentials: 'include'
             })
             const data = await res.json() 
-            if(!data.auth) return NavigateWithNext('/login')
-            if(data.error) throw new Error(data.error)
+            if(data.auth === false) return NavigateWithNext('/login')
+            if(data.error) throw new Error(data?.error)
             toast.success(data.message)
             return data
         },
@@ -63,7 +63,7 @@ const SideBar = ({
                 credentials: 'include'
             })
             const data = await res.json()
-            if(!data.auth) return NavigateWithNext('/login')
+            if(data.auth === false) return NavigateWithNext('/login')
             if(data.error) throw new Error(data.error)
             return data
         },

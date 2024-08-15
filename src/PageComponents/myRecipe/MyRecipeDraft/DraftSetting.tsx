@@ -40,9 +40,9 @@ const DraftSetting = ({
                     <DropdownMenuLabel>Draft Settings</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>
-                        <Link className="flex" to={`/myrecipe/edit/${postId}`}>
+                        <Link className="flex w-[142px]" to={`/myrecipe/edit/${postId}`}>
                             <PencilIcon className="mr-3 h-6 w-6"/>
-                            <span className="text-base font-medium">Edit</span>
+                            <span className="text-base font-medium ">Edit</span>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem

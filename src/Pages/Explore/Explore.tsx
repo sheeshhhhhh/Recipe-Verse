@@ -19,7 +19,7 @@ export type Recipe = {
     id: string,
     rating: number,
     title: string,
-    image: string[] | File[] | undefined,
+    image: string[] | File[],
     description: string,
     ingredients: string [],
     cookingTime: string,

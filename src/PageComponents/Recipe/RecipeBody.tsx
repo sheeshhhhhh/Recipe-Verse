@@ -81,12 +81,6 @@ const RecipeBody = ({
         ];
     };
     
-    const images = [
-        'https://cafedelites.com/wp-content/uploads/2018/04/Chicken-Tikka-Masala-IMAGE-5-2048x1365.jpg', 
-        'https://www.allrecipes.com/thmb/N3hqMgkSlKbPmcWCkHmxekKO61I=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Easyspaghettiwithtomatosauce_11715_DDMFS_1x2_2425-c67720e4ea884f22a852f0bb84a87a80.jpg', 
-        'https://www.recipetineats.com/tachyon/2018/04/Chicken-Tikka-Masala_0.jpg?resize=964%2C1350&zoom=1'
-    ]
-    
     return (
         <main>
             <Card className="w-[875px]">
@@ -94,7 +88,7 @@ const RecipeBody = ({
                         {/* put carousel here later */}
                         <ImageCarousel 
                         autoSlide
-                        images={images} />
+                        images={recipe.image as string[]} />
                     </div>
                 <CardHeader className="pt-[32px] px-[64px] pb-0">
                     {/* <div className="flex gap-3 pl-6">
@@ -103,7 +97,7 @@ const RecipeBody = ({
                             <AvatarProfile authorProfile={author.profile} authorName={author.name} />
                             <CardTitle className="text-base">{author.name}</CardTitle>
                             <CardDescription>joined in {format(new Date(author.createAt), 'PPP')}</CardDescription>
-                        </div>
+                        </div>  
                     </div> */}
                     <div className="mb-3">
                          <CardTitle className="text-5xl font-bold">{recipe.title}</CardTitle>

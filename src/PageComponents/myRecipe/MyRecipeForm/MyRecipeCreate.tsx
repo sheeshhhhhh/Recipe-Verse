@@ -44,7 +44,7 @@ export default function MyRecipeForm({
     const [recipeInfo, setRecipeInfo] = useState<recipeInfoType>(recipeData || 
         {
             title: '',
-            image: undefined,
+            image: [],
             description: '',
             ingredients: [],
             cookingTime: '',
@@ -195,6 +195,7 @@ function DisplayImage({ images }: DisplayImageProps) {
     return (
         <div className="w-[300px]">
             <ImageCarousel size={300} images={imageURL} />
+            {/* delete certain images for edit later */}
         </div>
     )
 }

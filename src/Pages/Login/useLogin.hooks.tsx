@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { LoginInfoType } from './Login'
 import { useSearchParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 
 const useLogin = () => {
@@ -34,6 +35,7 @@ const useLogin = () => {
 
     } catch (error: any) {
         console.log('Error in the useLogin hook Error: ' + error)
+        toast.error(error.message)
     } finally {
       setLoading(false)
     }

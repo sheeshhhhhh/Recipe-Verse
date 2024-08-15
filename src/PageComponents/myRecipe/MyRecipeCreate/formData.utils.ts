@@ -16,7 +16,7 @@ const formData = (recipe: Recipe) => {
     // Append each image in the array
     if (recipe.image) {
         recipe.image.forEach((img, index) => {
-            formData.append(`image[${index}]`, img)
+            formData.append(`image`, img)
         })
     }
 

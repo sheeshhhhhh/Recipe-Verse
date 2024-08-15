@@ -4,7 +4,7 @@ import { useAuthContext } from '@/context/authContext'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import ThemeSwitch from '../ThemeSwitch'
 import NotificationButton from './Notification'
-import toast from 'react-hot-toast'
+import ProfileNav from './ProfileNav'
 
 const NavBar = () => {
     const location = useLocation()
@@ -63,7 +63,7 @@ const NavBar = () => {
                     </nav>}
 
                     {/* show only when not authenticated authenticated */}
-                    <div className='flex items-center gap-3'>
+                    <div className='flex items-center gap-6'>
                         {/* make a dynamic where if not logged in then render this but if login in then render log out or select menu something */}
                         {
                             !authenticated ? 
@@ -83,17 +83,10 @@ const NavBar = () => {
                                 </Link>
                             </div> :
 
-                            <div className='flex gap-2'>
+                            <div className='flex items-center '>
                                 {/* fix later and also make hook for this */}
                                 <NotificationButton />
-                                <Button onClick={async () => {
-                                    const res = await fetch('http://localhost:4000/api/auth/logout', { credentials: 'include' })
-                                    const data = await res.json()
-                                    if(data.error) return toast.error('failed to log out') 
-                                    window.location.assign(`http://localhost:3000${location.pathname}`)
-                                }}>
-                                    Logout
-                                </Button>
+                                <ProfileNav />
                             </div>
                         }
 
