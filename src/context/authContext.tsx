@@ -25,30 +25,6 @@ export const useAuthContext = () => {
 export function AuthProvider({
     children
 }: AuthProviderProps) {
-    // const [user, setUser] = useState(undefined)
-    // const [loading, setLoading] = useState(true)
-
-    // useEffect(() => {
-    //     setLoading(true)
-    //     const checkauth = async () => {
-    //         try {
-    //             const res: Response = await fetch('http://localhost:4000/api/auth/check', {
-    //                 credentials: 'include'
-    //             })
-
-    //             const data = await res.json()
-
-    //             if(data.error) throw new Error(data.error)
-                
-    //             setUser(data?.user)
-    //         } catch (error) {
-    //             console.log(error)
-    //         } finally {
-    //             setLoading(false)
-    //         }
-    //     }
-    //     checkauth()
-    // }, [])
 
     const { data, isLoading } = useQuery({
         queryKey: ['user'],

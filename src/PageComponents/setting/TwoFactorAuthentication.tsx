@@ -2,7 +2,9 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogHeader, DialogFooter } from '@/components/ui/dialog'
 import { DialogDescription } from '@radix-ui/react-dialog'
+import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import LoadingSpinner from '../LoadingSpinner'
 
 const TwoFactorAuthentication = () => {
 
@@ -32,6 +34,22 @@ const EnableModal = () => {
     const [modalOpen, setModalOpen] = useState<boolean>(false)
 
     // implement functionality later
+    const { mutate, isPending } = useMutation({
+        mutationFn: async () => {
+            const res = await fetch('http://localhost:4000/api/user/enable2FA', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+                body: JSON.stringify({
+                    command: 'enable'
+                }),
+                credentials: 'include'
+            })
+            const data = await res.json()
+            if(data.error) throw new Error(data.error)
+        }
+    })
 
     return (
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
@@ -65,10 +83,13 @@ const EnableModal = () => {
                         </Button>
 
                         <Button
+                        disabled={isPending}
+                        onClick={() => mutate()}
                         className='max-w-[100px] w-full'
                         >
-                            Enable
+                            { isPending ? <LoadingSpinner /> : "Enable" }
                         </Button>
+
                     </div>
                 </DialogFooter>
             </DialogContent>

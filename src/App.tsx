@@ -26,7 +26,7 @@ function App() {
   const { loading, user} = useAuthContext()
   
   if(loading) return
-  
+
   return (
     <div>
       <div>

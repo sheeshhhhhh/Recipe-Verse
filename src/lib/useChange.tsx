@@ -21,7 +21,7 @@ function useChange<T>()  {
         // name: is the useState name in the object
         const { name, type, value } = e.target
         if(!name) throw new Error('Name is required as a props to the input itself because it is the identifier')
-    
+
         const isNumber = type === 'number' // for handling number values
         const numberValue = (value === "" ? 0 : Number(value)) // making it so that it is zero when accepting
 

@@ -14,6 +14,7 @@ import Username from "./Username"
 import Password from "./Password"
 import TwoFactorAuthentication from "./TwoFactorAuthentication"
 import DeleteAccount from "./DeleteAccount"
+import ChangeAvatar from "./ChangeAvatar"
 
 type initialValueUserType = {
     name: string,
@@ -62,13 +63,18 @@ const Settings = () => {
                 <div className='space-y-8'>
 
                     <Profile 
-                    initialProfile={data.profile}
+                    initialBio={data.userInfo.bio}
                     initialEmail={data.userInfo.email}
                     initialName={data.name}
 
                     />
-
-                    <Username initialUsername={data.username} />
+                    <Username 
+                    initialUsername={data.username} 
+                    />
+                    <ChangeAvatar 
+                    initialName={data.name}
+                    initialProfile={data.profile}
+                    />
                     <Password />
                     <TwoFactorAuthentication />
                     <DeleteAccount />
