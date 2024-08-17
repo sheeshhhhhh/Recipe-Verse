@@ -4,7 +4,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import useChange from '@/lib/useChange'
 import { useState } from 'react'
-import AvatarProfile from '../AvatarProfile'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import LoadingSpinner from '../LoadingSpinner'
 import { Textarea } from '@/components/ui/textarea'
@@ -56,6 +55,9 @@ const Profile = ({
         }
     })
 
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{3,}$/ // regex from google
+
+    const isNotEmail = !emailPattern.test(profileInfo.email) // will return false if it is email and true if not email 
     const nameBlankError = error?.message === 'blank name is not allowed' // required in the data base
     const emailAlreadyExist = error?.message === 'email already exist' // unique constraint
 
@@ -85,19 +87,26 @@ const Profile = ({
                     </div>
                     <div className="space-y-2">
                         <Label 
-                        className={`${emailAlreadyExist && 'text-red-600'}`}
-                        htmlFor="email">
+                        className={`${emailAlreadyExist || isNotEmail && 'text-red-600'}`}
+                        htmlFor="email"
+                        >
                             Email
                         </Label>
                         <Input 
                         id="email" 
                         type="text"
                         name='email'
-                        className={`${emailAlreadyExist && 'border-red-600 focus-visible:border-input focus-visible:ring-red-600'}`}
+                        className={`${emailAlreadyExist || isNotEmail && 'border-red-600 focus-visible:border-input focus-visible:ring-red-600'}`}
                         value={profileInfo.email}
                         onChange={(e) => handleChangeObject(e, setProfileInfo)}
                         />
-                        {emailAlreadyExist && <p className='text-red-600 font-medium'>{error.message}</p>}
+                        {emailAlreadyExist || isNotEmail &&
+                        <p className='text-red-600 font-medium'>
+                            {isNotEmail ? 
+                            'not email' : 
+                            error?.message
+                            }
+                        </p>}
                     </div>
                 </div>
                 <div className="space-y-2">
@@ -113,7 +122,7 @@ const Profile = ({
             <CardFooter>
                 <Button
                 onClick={() => changeUserInfo()}
-                disabled={isPending}
+                disabled={isPending || isNotEmail}
                 >
                     {isPending ? <LoadingSpinner /> : "Save Changes" }
                 </Button>

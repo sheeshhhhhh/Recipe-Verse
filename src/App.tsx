@@ -13,6 +13,8 @@ import Recipe from './Pages/Recipe/Recipe'
 import SignUp from './Pages/SignUp/SignUp'
 import { useAuthContext } from './context/authContext'
 import Setting from './Pages/Setting/Setting'
+import Otp from './Pages/Otp/Otp'
+import Error from './Pages/Error'
 
 // this will include all the pages where navbar shouldn's show up
 export const NoNavBarPages = [
@@ -35,6 +37,7 @@ function App() {
           <Route path='/' element={<Home />}/>
           <Route path='/about' element={<About />}/>
           <Route path='/explore' element={<Explore />} />
+          <Route path='/error' element={<Error />} />
         </Routes>
       </div>
       <div>
@@ -42,6 +45,7 @@ function App() {
           {/* USE SEARCH PARAMS OF CALLBACK URL TO HANDLE LOGIN AND SIGNUP */}
           <Route path='/login' element={!user ? <Login /> : <Navigate to='/explore' />} /> 
           <Route path='/signUp' element={!user ? <SignUp /> : <Navigate to='/explore' />}/>
+          <Route path='/otp' element={!user ? <Otp /> : <Navigate to={'/explore'} /> } />
         </Routes>
       </div>
       <div>

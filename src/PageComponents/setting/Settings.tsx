@@ -20,6 +20,7 @@ type initialValueUserType = {
     name: string,
     username: string,
     profile: string | null,
+    MultiFactor: boolean,
     userInfo: {
         bio: string | null,
         email: string | null
@@ -48,7 +49,7 @@ const Settings = () => {
             <LoadingSpinner className="h-12 w-12 mt-20" />
         </div>
     )
-
+    
     if(isError || !data) return <Navigate to={'/error?message=failed to load settings'} />
 
     return (
@@ -76,7 +77,9 @@ const Settings = () => {
                     initialProfile={data.profile}
                     />
                     <Password />
-                    <TwoFactorAuthentication />
+                    <TwoFactorAuthentication 
+                    MultiFactor={data.MultiFactor}
+                    />
                     <DeleteAccount />
                 </div>
             </div>
