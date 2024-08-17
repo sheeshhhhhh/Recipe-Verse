@@ -20,10 +20,14 @@ const RecipeCollection = ({
     const stars = [1, 2, 3, 4, 5]
     // fix loading flickering later it's because of debounce use Effect
     if(loading) return //<RecipeSkeleton />
-    if(recipeCollection.length === 0) return <h2>no items found</h2>
+    if(recipeCollection.length === 0) return (
+      <div className="w-[1161px] h-[710px]">
+        <h2>No Items Found</h2>
+      </div>
+    )
 
     return (
-      <div className="w-full h-fit grid grid-cols-4 gap-5">
+      <div className="w-full max-w-[1161px] h-[710px] grid grid-cols-4 gap-5">
           {recipeCollection?.map((post, idx) => {
             const item = post.recipe
 
