@@ -16,6 +16,7 @@ import Setting from './Pages/Setting/Setting'
 import Otp from './Pages/Otp/Otp'
 import Error from './Pages/Error'
 import Notification from './Pages/Notification'
+import Profile from './Pages/Profile/Profile'
 
 // this will include all the pages where navbar shouldn's show up
 export const NoNavBarPages = [
@@ -55,7 +56,7 @@ function App() {
           {/* USE FOR USER AND RECIPE NEEDED TO BE AUTHENTICATED */}
           <Route path='/recipe/:id' element={<Recipe />  }/>
           <Route path='/myrecipe/*' element={user ? <MyRecipe /> : <Navigate to={`/login?next=${location.pathname}`} />} />
-          <Route path='/profile' element={user ? null : <Navigate to={`/login?next=${location.pathname}`} />} />
+          <Route path='/profile/:id' element={user ? <Profile /> : <Navigate to={`/login?next=${location.pathname}`} />} />
           <Route path='/settings' element={user ? <Setting /> : <Navigate to={`/login?next=${location.pathname}`} />} />
           <Route path='/notifications/*' element={user ? <Notification /> : <Navigate to={`/login?next=${location.pathname}`} /> } /> 
         </Routes>

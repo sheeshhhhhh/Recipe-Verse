@@ -13,7 +13,7 @@ const NavBar = () => {
     const { user: authenticated } = useAuthContext()
 
     return (
-        <nav className="top-0 z-50 bg-clip-padding  shadow-sm dark:bg-gray-950/90">
+        <nav className="top-0 z-50 bg-clip-padding  shadow-sm dark:#171717">
             <div className='w-full max-w-7xl mx-auto px-4'>
                 <div className='flex justify-between h-14 items-center'>
 

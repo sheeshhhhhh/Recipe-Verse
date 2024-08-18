@@ -3,17 +3,21 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/h
 
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa";
-import { memo } from "react";
+import { ComponentProps, memo } from "react";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { ClassValue } from "clsx";
 
 type RecipeCollectionProps = {
   recipeCollection: any[],
-  loading: boolean
+  loading: boolean,
+  className?: ClassValue
 }
 
 const RecipeCollection = ({
   recipeCollection,
-  loading
+  loading,
+  className
 } : RecipeCollectionProps) => {
     const stars = [1, 2, 3, 4, 5]
     // fix loading flickering later it's because of debounce use Effect
@@ -25,7 +29,7 @@ const RecipeCollection = ({
     )
 
     return (
-      <div className="w-full max-w-[1161px] h-[710px] grid grid-cols-4 gap-5">
+      <div className={cn("w-full max-w-[1161px] h-[710px] grid grid-cols-4 gap-5", className)}>
           {recipeCollection?.map((post, idx) => {
             const item = post.recipe
 

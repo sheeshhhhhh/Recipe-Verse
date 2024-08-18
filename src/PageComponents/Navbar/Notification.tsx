@@ -1,5 +1,5 @@
 import { useSocketContext } from "@/context/socketContext"
-import { useEffect, useMemo, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react"
 import { BellIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
@@ -33,7 +33,7 @@ type Notification = {
 }
 
 const NotificationButton = () => {
-
+    const [popOver, setPopOver] = useState<boolean>(false)
     const socket = useSocketContext()
     const queryClient = useQueryClient();
 
@@ -78,7 +78,7 @@ const NotificationButton = () => {
 
     return (
         <div>
-            <Popover>
+            <Popover open={popOver} onOpenChange={setPopOver}>
                 <PopoverTrigger asChild>
                     <Button
                     variant={'ghost'}
@@ -97,7 +97,9 @@ const NotificationButton = () => {
                         isLoading ? 
                         <LoadingSpinner />
                         :
-                        <NotificationDisplay notifications={data || []} />
+                        <NotificationDisplay 
+                        setPopOver={setPopOver}
+                        notifications={data || []} />
                     }
                 </PopoverContent>
             </Popover>
@@ -107,11 +109,13 @@ const NotificationButton = () => {
 }
 
 type NotificationDisplayProps = {
-    notifications: Notification[]
+    notifications: Notification[],
+    setPopOver: Dispatch<SetStateAction<boolean>>
 }
 
 const NotificationDisplay = ({
-    notifications
+    notifications,
+    setPopOver
 } : NotificationDisplayProps) => {
 
     
@@ -122,6 +126,7 @@ const NotificationDisplay = ({
             <h2 className="font-bold text-xl">Notifications</h2>
             <div className="w-full flex justify-end pr-1 mb-2">
                 <Link 
+                onClick={() => setPopOver(false)}
                 className="text-blue-600"
                 to={'/notifications'}>
                     All notifications
@@ -140,7 +145,7 @@ const NotificationDisplay = ({
                             authorName={notification.notificationFrom.name}  
                             authorProfile={notification.notificationFrom.profile || ''}
                             />
-                           <div className="flex gap-2"
+                           <div className="flex gap-2 justify-between w-full"
                            aria-label="body">
 
                             <div className="information">

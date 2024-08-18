@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
-import { useAuthContext } from "@/context/authContext";
 
 type FollowUserProps = {
     postId: string,

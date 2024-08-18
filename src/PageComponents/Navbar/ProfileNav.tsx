@@ -53,7 +53,7 @@ const ProfileNav = () => {
                     <Link
                     onClick={() => setOpen(false)}
                     className='py-2 px-4 flex font-medium items-center gap-3 hover:bg-accent hover:text-accent-foreground'
-                    to={'profile'}>
+                    to={`/profile/${user.id}`}>
                         <UserRoundIcon />
                         Profile
                     </Link>
