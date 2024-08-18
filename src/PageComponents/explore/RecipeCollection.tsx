@@ -1,11 +1,9 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card"
 
-import { Recipe } from "@/Pages/Explore/Explore"
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa";
 import { memo } from "react";
-import RecipeSkeleton from "./RecipeSkeleton";
 import { Link } from "react-router-dom";
 
 type RecipeCollectionProps = {

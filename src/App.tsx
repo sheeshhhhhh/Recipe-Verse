@@ -15,11 +15,13 @@ import { useAuthContext } from './context/authContext'
 import Setting from './Pages/Setting/Setting'
 import Otp from './Pages/Otp/Otp'
 import Error from './Pages/Error'
+import Notification from './Pages/Notification'
 
 // this will include all the pages where navbar shouldn's show up
 export const NoNavBarPages = [
   '/login',
   '/signUp',
+  '/otp'
 ]
 
 function App() {
@@ -55,6 +57,7 @@ function App() {
           <Route path='/myrecipe/*' element={user ? <MyRecipe /> : <Navigate to={`/login?next=${location.pathname}`} />} />
           <Route path='/profile' element={user ? null : <Navigate to={`/login?next=${location.pathname}`} />} />
           <Route path='/settings' element={user ? <Setting /> : <Navigate to={`/login?next=${location.pathname}`} />} />
+          <Route path='/notifications/*' element={user ? <Notification /> : <Navigate to={`/login?next=${location.pathname}`} /> } /> 
         </Routes>
       </div>
     </div>
