@@ -1,4 +1,3 @@
-import { useAuthContext } from "@/context/authContext"
 import RecipeCollection from "@/PageComponents/explore/RecipeCollection"
 import LoadingSpinner from "@/PageComponents/LoadingSpinner"
 import { useQuery } from "@tanstack/react-query"
@@ -8,7 +7,7 @@ import ProfileInfo from "./ProfileInfo"
 
 const Profile = () => {
     const { id } = useParams()
-    const { user } = useAuthContext()
+
     const { data: profileInfo, isLoading, error } = useQuery({
         queryKey: ['profileInfo'],
         queryFn: async () => {
@@ -18,7 +17,7 @@ const Profile = () => {
             return data
         }
     })
-    const postCount = profileInfo.Posts.length || 0
+    const postCount = profileInfo?.Posts?.length || 0
 
     if(isLoading) return <LoadingSpinner />
     if(error) return <Navigate to={`/error?message=internal server Error(${error})`} />

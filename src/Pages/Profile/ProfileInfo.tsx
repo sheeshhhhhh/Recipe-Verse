@@ -5,6 +5,7 @@ import { useAuthContext } from '@/context/authContext'
 import AvatarProfile from '@/PageComponents/AvatarProfile'
 import { format } from 'date-fns'
 import { useParams } from 'react-router-dom'
+import Follow from './Follow'
 
 type ProfileInfoProps = {
     userInfo: any,
@@ -18,7 +19,7 @@ const ProfileInfo = ({
     const { user } = useAuthContext() // the current user that is viewing
     const { id } = useParams()// the profile being viewed
     
-    const isOwner = user === id
+    const isOwner = user.id === id
 
     return (
         <aside className="w-[375px] flex flex-col gap-4">
@@ -34,6 +35,9 @@ const ProfileInfo = ({
                             />
                             <CardTitle className="text-xl font-semibold mt-4">{userInfo.name}</CardTitle>
                         </div>
+                        <div>
+                            <CardDescription className='text-sm ml-14'>{userInfo.username}</CardDescription>
+                        </div>
                         <div className="flex justify-center items-center gap-4 mx-4 mt-1">
                             <CardDescription>Posts {postCount}</CardDescription>
                             <CardDescription>Followers {userInfo.followerCount}</CardDescription>
@@ -44,8 +48,13 @@ const ProfileInfo = ({
                         
                         {
                             isOwner ? 
-                            <Button className="w-[350px] rounded-lg">Edit Profile</Button> : 
-                            // <FollowUser postId={postId} authorId={author.id} />
+                            <Button 
+                            onClick={() => window.location.assign('http://localhost:3000/settings')}
+                            className="w-[350px] rounded-lg">
+                                Edit Profile
+                            </Button> : 
+                            <Follow userId={userInfo.id} />
+                            
                         }
                     </div>}
                     {
@@ -57,6 +66,9 @@ const ProfileInfo = ({
                     <div>
                         <h3 className="font-bold uppercase text-sm">Joined</h3>
                         <span className="text-sm">{format(new Date(userInfo.createAt), 'MMM dd, yyyy')}</span>
+                    </div>
+                    <div>
+                        <h3 className='font-bold uppercase text-sm'>Social Media</h3>
                     </div>
                 </CardHeader>
             </Card>

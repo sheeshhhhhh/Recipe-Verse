@@ -4,6 +4,7 @@ import LoadingSpinner from "../LoadingSpinner"
 import { Notification as NotificationType } from "./types"
 
 
+
 type NotificationsProps = {
     data?: NotificationType[],
     loading: boolean
@@ -15,7 +16,12 @@ const Notifications = ({
 } : NotificationsProps) => {
 
     if(loading) return <LoadingSpinner />
-    if(data?.length === 0) return <h2>No notification</h2> // make a design later
+    if(data?.length === 0) return (
+        <div className="w-full h-[700px] flex flex-col pt-20 items-center">
+            <InfoIcon size={80} className="mb-10" />
+            <h2 className="font-bold text-3xl">Empty Notification</h2>
+        </div>
+    ) // make a design later
 
     return (
         <div className="space-y-3">
@@ -28,6 +34,7 @@ const Notifications = ({
 
 import { Card } from "@/components/ui/card"
 import { Link } from "react-router-dom"
+import { InfoIcon } from "lucide-react"
 
 type NotificationProps = {
     data: NotificationType
